@@ -639,13 +639,14 @@
             .custom-cursor {
                 display: none !important;
             }
-            /* 手機端保留3D透視，改用陀螺儀傾斜（過渡稍慢避免抖動） */
+            /* 手機關閉3D傾斜，避免卡頓 */
             .banner {
-                perspective: 1200px;
+                perspective: none;
             }
             .banner-3d-item {
-                transition: transform 0.35s ease-out, text-shadow 0.35s ease-out;
-                text-shadow: 0px 2px 0px rgb(0, 0, 0);
+                transition: none !important;
+                transform: none !important;
+                text-shadow: 0px 2px 12px rgba(0,0,0,0.8) !important;
             }
         }
         @media (max-width: 768px) {
@@ -972,57 +973,6 @@
             });
         });
 
-        // ========== 手機陀螺儀3D傾斜邏輯（與桌面版鼠標效果一致） ==========
-        const isMobileDevice = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || ('ontouchstart' in window);
-
-        // 陀螺儀傾斜處理函數：將 gamma(左右) beta(前後) 映射為與鼠標相同的 offset 體系
-        function handleGyroTilt(e) {
-            const gamma = e.gamma; // 左右傾斜 -90~90
-            const beta = e.beta;   // 前後傾斜 -180~180，自然手持約45°
-            if (gamma === null || beta === null) return;
-
-            // 將陀螺儀角度映射為 -1~1 的偏移量（與鼠標版相同體系）
-            const rawOffsetX = gamma / 45;
-            const rawOffsetY = (beta - 45) / 45;
-            const offsetX = Math.max(-1, Math.min(1, rawOffsetX));
-            const offsetY = Math.max(-1, Math.min(1, rawOffsetY));
-
-            const rotateY = offsetX * maxRotate;
-            const rotateX = -offsetY * maxRotate;
-            const shadowX = -offsetX * maxRotate * shadowMulti;
-            const shadowY = -offsetY * maxRotate * shadowMulti;
-
-            banner3dItems.forEach(el => {
-                el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                el.style.textShadow = `${shadowX}px ${shadowY}px 14px rgba(0,0,0,0.85)`;
-            });
-        }
-
-        // 重置傾斜（手機放平時回到原位）
-        function resetGyroTilt() {
-            banner3dItems.forEach(el => {
-                el.style.transform = `rotateX(0deg) rotateY(0deg)`;
-                el.style.textShadow = `0px 2px 0px rgb(0, 0, 0)`;
-            });
-        }
-
-        if (isMobileDevice) {
-            // iOS 13+ 需要在用戶點擊事件中請求陀螺儀權限
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                function requestGyroPermission() {
-                    DeviceOrientationEvent.requestPermission().then(state => {
-                        if (state === 'granted') {
-                            window.addEventListener('deviceorientation', handleGyroTilt);
-                        }
-                    }).catch(err => console.log('陀螺儀權限請求失敗:', err));
-                }
-                document.getElementById('enterCn').addEventListener('click', requestGyroPermission);
-                document.getElementById('enterEn').addEventListener('click', requestGyroPermission);
-            } else {
-                // 非 iOS 或旧版 iOS，直接監聽陀螺儀
-                window.addEventListener('deviceorientation', handleGyroTilt);
-            }
-        }
 
         const cursor = document.querySelector('.custom-cursor');
         let mouseX = 0, mouseY = 0;
