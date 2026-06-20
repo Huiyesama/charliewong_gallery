@@ -7,7 +7,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>@charliewong_gallery</title>
-    <!-- 匯入Google開源字體 LXGW WenKai TC、Homemade Apple -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
@@ -17,7 +16,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Microsoft JhengHei", sans-serif;
-            /* 隱藏原生滑鼠指標 */
             cursor: none !important;
         }
         html,
@@ -37,9 +35,7 @@
             position: relative;
             padding-top: calc(1rem + 60px);
         }
-        /* 統一滾動鎖定class，優先級最高 */
         body.lock-scroll {
-            /* 不用 overflow:hidden，由 JS 鎖定滾動位置，防止 backdrop-filter 失效 */
             padding-right: var(--scrollbar-width, 0px);
         }
 
@@ -64,16 +60,13 @@
             pointer-events: none;
             z-index: 9999999;
             transform: translate(-50%, -50%) scale(1);
-            /* 修正：基礎hover過渡與點擊同步0.5s */
             transition: transform 0.5s ease-out;
             mix-blend-mode: normal;
         }
-        /* 點擊縮小（全域任意點擊都觸發）使用彈跳曲線 */
         .custom-cursor.down {
             transform: translate(-50%, -50%) scale(0.4);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* 懸浮可點擊元素放大提示 */
         .custom-cursor.hover {
             transform: translate(-50%, -50%) scale(1.8);
         }
@@ -83,7 +76,6 @@
             position: fixed;
             top: 0;
             left: 0;
-            /* 用 100% 代替 100vw，避免 iOS Safari vw 含捲軸導致頁面被撐寬 */
             width: 100%;
             height: 100%;
             background-color: #000;
@@ -100,7 +92,6 @@
             opacity: 0;
             pointer-events: none;
         }
-        /* 百分比文字 */
         .loadNum {
             font-size: 20px;
             color: #ffffff;
@@ -110,7 +101,6 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
-        /* 進度條容器 */
         .progressBox {
             width: min(420px, 85vw);
             opacity: 1 !important;
@@ -133,7 +123,6 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
-        /* 進入按鈕組 */
         .enterBtns {
             margin-top: 30px;
             display: flex;
@@ -149,7 +138,6 @@
             opacity: 1;
         }
 
-        /* 文字发光呼吸闪烁动画 纯白光晕 3秒缓慢循环 */
         @keyframes glowBlink {
             0% {
                 text-shadow: 0 0 4px rgba(255, 255, 255, 0.3), 0 0 8px rgba(255, 255, 255, 0.2);
@@ -162,17 +150,10 @@
             }
         }
 
-        /* 音樂按鈕 & 返回頂部按鈕 共用點擊彈跳動畫 */
         @keyframes btnBounce {
-            0% {
-                transform: translateZ(0) scale(1);
-            }
-            50% {
-                transform: translateZ(0) scale(0.85);
-            }
-            100% {
-                transform: translateZ(0) scale(1);
-            }
+            0% { transform: translateZ(0) scale(1); }
+            50% { transform: translateZ(0) scale(0.85); }
+            100% { transform: translateZ(0) scale(1); }
         }
         .music-toggle-btn.click-bounce,
         .scroll-top-btn.click-bounce,
@@ -180,21 +161,14 @@
             animation: btnBounce 0.3s ease-out;
         }
 
-        /* 新：提示外框呼吸動畫，向外擴散、淡入淡出 */
         @keyframes pulseHintRing {
-            0% {
-                box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.6);
-            }
-            100% {
-                box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
-            }
+            0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.6); }
+            100% { box-shadow: 0 0 0 16px rgba(255, 255, 255, 0); }
         }
-        /* 未點擊時無限播放提示光環 */
         .music-toggle-btn.hint-ring {
             animation: pulseHintRing 2.2s infinite ease-out;
         }
 
-        /* 淡入完成后开启发光动画 */
         .enterBtns.showBtn .btnCn,
         .enterBtns.showBtn .btnEn {
             animation: glowBlink 3s infinite ease-in-out;
@@ -267,7 +241,6 @@
             color: #ffffff;
         }
 
-        /* 頁面切換樣式 */
         .page-wrap {
             position: relative;
             width: 100%;
@@ -290,10 +263,7 @@
             opacity: 1;
         }
 
-        /* About me */
-        #aboutme {
-            background: #000;
-        }
+        #aboutme { background: #000; }
         .about-header {
             display: flex;
             align-items: center;
@@ -313,7 +283,6 @@
             color: #fff;
         }
 
-        /* 首頁橫幅 3D透視容器 */
         .banner {
             height: 100vh;
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 60%, #000 100%),
@@ -326,11 +295,9 @@
             text-align: center;
             padding: 0 20px;
             margin-bottom: -1px;
-            /* 開啟3D透視，子元素才有立體傾斜效果 */
             perspective: 1200px;
             perspective-origin: center center;
         }
-        /* Banner內所有需要3D跟隨滑鼠的元素共用樣式【修改：加入text-shadow過渡與基礎靜態陰影】 */
         .banner-3d-item {
             transition: transform 0.06s ease-out, text-shadow 0.06s ease-out;
             transform-style: preserve-3d;
@@ -338,12 +305,10 @@
             text-shadow: 0px 2px 0px rgb(0, 0, 0);
         }
         .banner h1.banner-3d-item {
-            /* 字體直接用 clamp 全局自適應，不分手機框 */
             font-size: clamp(18px, 5.5vw, 48px);
             margin-bottom: 15px;
             font-weight: bold;
             white-space: nowrap;
-            /* 不用 fit-content，防止超出視口 */
             max-width: calc(100% - 32px);
             text-align: center;
         }
@@ -359,7 +324,6 @@
             opacity: 0.9;
         }
 
-        /* 玻璃按鈕 */
         .glass-btn {
             transform: translateZ(0);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
@@ -383,22 +347,14 @@
                 0 12px 36px rgba(0, 0, 0, 0.55);
         }
 
-        .more-btn-wrap {
-            text-align: center;
-            margin: 40px 0 100px;
-        }
+        .more-btn-wrap { text-align: center; margin: 40px 0 100px; }
         .container {
             max-width: 1200px;
             margin: 0 auto 80px auto;
             padding: 80px 20px 0;
             background: #000;
         }
-        .section-title {
-            text-align: center;
-            font-size: 32px;
-            margin-bottom: 50px;
-            color: #ffffff;
-        }
+        .section-title { text-align: center; font-size: 32px; margin-bottom: 50px; color: #ffffff; }
         .card-wrap {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -412,14 +368,9 @@
             box-shadow: 0 4px 12px rgba(80, 80, 80, 0.15);
             transition: transform 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-8px);
-        }
-        .card h3 {
-            margin-bottom: 12px;
-            color: #ffffff;
-        }
-        /* 加大上下外边距，拉开两行图片间距 */
+        .card:hover { transform: translateY(-8px); }
+        .card h3 { margin-bottom: 12px; color: #ffffff; }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -433,10 +384,9 @@
             box-shadow: 0 4px 12px rgba(80, 80, 80, 0.15);
             transition: transform 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
-        .gallery-item:hover {
-            transform: translateY(-6px);
-        }
+        .gallery-item:hover { transform: translateY(-6px); }
         .gallery-item img {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -445,34 +395,18 @@
             pointer-events: none;
         }
 
-        /* ========== 第一張圖片下方的文字說明（加入滾動漸顯） ========== */
-        .first-img-caption {
-            margin-top: 12px;
-            padding-left: 4px;
-        }
+        .first-img-caption { margin-top: 12px; padding-left: 4px; }
         .caption-location {
-            font-size: 32px;
-            font-weight: bold;
-            line-height: 1.2;
+            font-size: 32px; font-weight: bold; line-height: 1.2;
             font-family: "LXGW WenKai TC", serif;
         }
         .caption-date {
-            font-size: 14px;
-            font-weight: bold;
-            line-height: 1.4;
-            opacity: 0.8;
-            font-family: "LXGW WenKai TC", serif;
+            font-size: 14px; font-weight: bold; line-height: 1.4;
+            opacity: 0.8; font-family: "LXGW WenKai TC", serif;
         }
 
-        footer {
-            background: #000000;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 60px;
-        }
+        footer { background: #000000; color: white; text-align: center; padding: 30px; margin-top: 60px; }
 
-        /* 回到頂部按鈕 */
         .scroll-top-btn {
             position: fixed;
             right: 30px;
@@ -486,10 +420,7 @@
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.16),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
             border: none;
             cursor: pointer;
             opacity: 0;
@@ -502,20 +433,13 @@
             align-items: center;
             justify-content: center;
         }
-        .scroll-top-btn.show {
-            opacity: 1;
-            visibility: visible;
-        }
+        .scroll-top-btn.show { opacity: 1; visibility: visible; }
         .scroll-top-btn:hover {
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255,255,255,0.35);
             transform: translateZ(0) translateY(-3px);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 14px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
 
-        /* ========== 手機版圖片彈窗返回按鈕 (liquid glass style) ========== */
         .lightbox-close-btn {
             position: fixed;
             right: 30px;
@@ -524,16 +448,12 @@
             height: 64px;
             border-radius: 50%;
             z-index: 10001;
-            /* 高於 lightbox (z-index:9999) */
             transform: translateZ(0);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.16),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
@@ -544,22 +464,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* 桌面版預設隱藏，手機版才顯示 */
         }
-        .lightbox-close-btn.show {
-            opacity: 1;
-            visibility: visible;
-        }
+        .lightbox-close-btn.show { opacity: 1; visibility: visible; }
         .lightbox-close-btn:hover {
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255,255,255,0.35);
             transform: translateZ(0) translateY(-3px);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 14px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
 
-        /* Spotify播放器容器（加入hover識別） */
         .spotify-glass-player {
             position: fixed;
             left: 20px;
@@ -572,10 +484,7 @@
             border: 1px solid rgba(255, 255, 255, 0.22);
             border-radius: 24px;
             padding: 14px;
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.16),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
             width: 420px;
             transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
         }
@@ -585,14 +494,10 @@
             pointer-events: none;
         }
         .spotify-glass-player:hover {
-            border-color: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 12px 36px rgba(0, 0, 0, 0.55);
+            border-color: rgba(255,255,255,0.35);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 12px 36px rgba(0,0,0,0.55);
         }
 
-        /* 音樂切換按鈕 位置維持不變 */
         .music-toggle-btn {
             position: fixed;
             left: 20px;
@@ -606,10 +511,7 @@
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.16),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -618,12 +520,9 @@
             transition: all 0.3s ease;
         }
         .music-toggle-btn:hover {
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255,255,255,0.35);
             transform: translateZ(0) translateY(-3px);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 14px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
         .bar {
             width: 6px;
@@ -631,38 +530,17 @@
             border-radius: 3px;
             animation: barAnim 1.2s infinite ease-in-out alternate;
         }
-        .bar:nth-child(1) {
-            height: 14px;
-            animation-delay: 0s;
-        }
-        .bar:nth-child(2) {
-            height: 24px;
-            animation-delay: 0.15s;
-        }
-        .bar:nth-child(3) {
-            height: 18px;
-            animation-delay: 0.3s;
-        }
-        .bar:nth-child(4) {
-            height: 28px;
-            animation-delay: 0.45s;
-        }
-        .music-toggle-btn.paused .bar {
-            animation: none;
-            height: 8px;
-        }
+        .bar:nth-child(1) { height: 14px; animation-delay: 0s; }
+        .bar:nth-child(2) { height: 24px; animation-delay: 0.15s; }
+        .bar:nth-child(3) { height: 18px; animation-delay: 0.3s; }
+        .bar:nth-child(4) { height: 28px; animation-delay: 0.45s; }
+        .music-toggle-btn.paused .bar { animation: none; height: 8px; }
         @keyframes barAnim {
-            0% {
-                transform: scaleY(0.4);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scaleY(1);
-                opacity: 1;
-            }
+            0% { transform: scaleY(0.4); opacity: 0.5; }
+            100% { transform: scaleY(1); opacity: 1; }
         }
 
-        /* 圖片彈窗 桌面端：日期顺时针转90度竖排 + 地点竖排，和图片垂直居中 */
+        /* 圖片彈窗 */
         .image-lightbox {
             position: fixed;
             inset: 0;
@@ -679,10 +557,7 @@
             visibility: hidden;
             transition: opacity 0.45s ease, visibility 0.45s ease;
         }
-        .image-lightbox.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .image-lightbox.active { opacity: 1; visibility: visible; }
         .lightbox-wrap {
             padding: 16px;
             border-radius: 20px;
@@ -690,35 +565,26 @@
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.16),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
             max-width: 90vw;
             max-height: 90vh;
             cursor: pointer;
-            /* 渐顯 + 漸大進入效果 */
             transition: transform 0.45s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.45s ease;
             transform: scale(0.92);
             opacity: 0;
             position: relative;
         }
-        /* 當 lightbox active 時，wrap 放大至原尺寸 */
-        .image-lightbox.active .lightbox-wrap {
-            transform: scale(1);
-            opacity: 1;
-        }
-        .lightbox-wrap.press {
-            transform: scale(0.96);
-        }
+        .image-lightbox.active .lightbox-wrap { transform: scale(1); opacity: 1; }
+        .lightbox-wrap.press { transform: scale(0.96); }
         .lightbox-img {
             max-width: calc(90vw - 32px);
             max-height: calc(90vh - 32px);
             display: block;
             border-radius: 12px;
             pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.15s ease;
         }
-        /* 彈窗外側文字容器：桌面版水平排列，两个竖排文字紧贴，和图片居中对齐 */
         .lightbox-special-info {
             display: none;
             align-items: center;
@@ -726,7 +592,6 @@
             gap: 4px;
             align-self: center;
         }
-        /* 日期2026顺时针旋转90度，竖排从上到下2、0、2、6 */
         .lightbox-rotated-date {
             font-family: "LXGW WenKai TC", serif;
             font-weight: bold;
@@ -735,7 +600,6 @@
             transform-origin: center center;
             white-space: nowrap;
         }
-        /* 地点文字竖排从上到下 清、远 */
         .lightbox-location-text {
             font-family: "LXGW WenKai TC", serif;
             font-weight: bold;
@@ -745,19 +609,11 @@
             white-space: nowrap;
         }
 
-        /* ========== 手機響應式全域修正 ========== */
-        @media (max-width: 768px),
-        (hover: none) {
-            * {
-                cursor: auto !important;
-            }
-            .custom-cursor {
-                display: none !important;
-            }
-            /* 手機關閉3D傾斜，避免卡頓 */
-            .banner {
-                perspective: none;
-            }
+        /* ========== 手機響應式 ========== */
+        @media (max-width: 768px), (hover: none) {
+            * { cursor: auto !important; }
+            .custom-cursor { display: none !important; }
+            .banner { perspective: none; }
             .banner-3d-item {
                 transition: none !important;
                 transform: none !important;
@@ -765,181 +621,55 @@
             }
         }
         @media (max-width: 768px) {
-            .loadNum {
-                font-size: 18px;
-            }
-            .btnCn {
-                font-size: 24px;
-            }
-            .btnEn {
-                font-size: 20px;
-            }
-            .banner {
-                height: 70vh;
-                margin-bottom: -1px !important;
-            }
-            body {
-                padding-bottom: 160px;
-            }
-            nav {
-                padding: 0.7rem 4%;
-            }
-            .nav-links a {
-                font-size: 13px;
-                margin-left: 0.8rem;
-            }
-            .logo-text {
-                font-size: 18px;
-            }
-            .nav-links {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            .nav-links a {
-                margin-left: 0;
-            }
-            .banner h1 {
-                /* 手機端继承全局 clamp 即可，不需要覆写 */
-                white-space: nowrap;
-            }
-            .banner-cn {
-                font-size: 20px;
-            }
-            .banner-en {
-                font-size: 16px;
-            }
-            .about-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            .about-username {
-                font-size: 32px;
-            }
-            .gallery-grid {
-                grid-template-columns: 1fr;
-                margin-bottom: 32px;
-                gap: 20px;
-            }
-            .gallery-item img {
-                height: 260px;
-            }
-            /* 手機版 Spotify 播放器位置上調 */
-            .spotify-glass-player {
-                width: calc(100% - 40px);
-                left: 20px;
-                right: 20px;
-                bottom: 120px;
-            }
-            /* 手機版音樂切換按鈕位置上調 */
-            .music-toggle-btn {
-                width: 56px;
-                height: 56px;
-                bottom: 50px;
-            }
-            .bar {
-                width: 5px;
-            }
-            /* 手機版回到頂部按鈕位置上調 */
-            .scroll-top-btn {
-                width: 56px;
-                height: 56px;
-                bottom: 50px;
-                font-size: 24px;
-            }
-            .lightbox-wrap {
-                padding: 10px;
-            }
-            /* 手機彈窗：垂直布局，文字在圖片上方，左對齊 */
-            .image-lightbox {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
-            }
-            .lightbox-special-info {
-                gap: 10px;
-                align-items: center;
-                padding-left: 6px;
-                flex-direction: row;
-                /* 順序交換：地點在前，日期在後 */
-                flex-flow: row;
-            }
-            /* 手機取消豎排、取消旋轉，橫排顯示 */
-            .lightbox-rotated-date {
-                font-size: 11px;
-                transform: rotate(0deg);
-                order: 2;
-                /* 日期排第二 */
-            }
-            .lightbox-location-text {
-                font-size: 26px;
-                writing-mode: horizontal-tb;
-                letter-spacing: 2px;
-                order: 1;
-                /* 地點排第一 */
-            }
-            /* 手機版顯示返回按鈕，位置上調 */
-            .lightbox-close-btn {
-                display: flex;
-                width: 56px;
-                height: 56px;
-                right: 30px;
-                bottom: 50px;
-                font-size: 24px;
-            }
+            .loadNum { font-size: 18px; }
+            .btnCn { font-size: 24px; }
+            .btnEn { font-size: 20px; }
+            .banner { height: 70vh; margin-bottom: -1px !important; }
+            body { padding-bottom: 160px; }
+            nav { padding: 0.7rem 4%; }
+            .nav-links a { font-size: 13px; margin-left: 0.8rem; }
+            .logo-text { font-size: 18px; }
+            .nav-links { flex-wrap: wrap; gap: 1rem; }
+            .nav-links a { margin-left: 0; }
+            .banner h1 { white-space: nowrap; }
+            .banner-cn { font-size: 20px; }
+            .banner-en { font-size: 16px; }
+            .about-header { flex-direction: column; text-align: center; gap: 20px; }
+            .about-username { font-size: 32px; }
+            .gallery-grid { grid-template-columns: 1fr; margin-bottom: 32px; gap: 20px; }
+            .gallery-item img { height: 260px; }
+            .spotify-glass-player { width: calc(100% - 40px); left: 20px; right: 20px; bottom: 120px; }
+            .music-toggle-btn { width: 56px; height: 56px; bottom: 50px; }
+            .bar { width: 5px; }
+            .scroll-top-btn { width: 56px; height: 56px; bottom: 50px; font-size: 24px; }
+            .lightbox-wrap { padding: 10px; }
+            .image-lightbox { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .lightbox-special-info { gap: 10px; align-items: center; padding-left: 6px; flex-direction: row; flex-flow: row; }
+            .lightbox-rotated-date { font-size: 11px; transform: rotate(0deg); order: 2; }
+            .lightbox-location-text { font-size: 26px; writing-mode: horizontal-tb; letter-spacing: 2px; order: 1; }
+            .lightbox-close-btn { display: flex; width: 56px; height: 56px; right: 30px; bottom: 50px; font-size: 24px; }
         }
-        /* 桌面版隱藏返回按鈕 */
         @media (min-width: 769px) {
-            .lightbox-close-btn {
-                display: none !important;
-            }
+            .lightbox-close-btn { display: none !important; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-                animation: none !important;
-            }
-            html {
-                scroll-behavior: auto !important;
-            }
-            .bar {
-                animation: none !important;
-            }
-            .lightbox-wrap {
-                transition: none !important;
-            }
-            #preloaderMask {
-                transition: none !important;
-            }
-            .custom-cursor {
-                transition: none !important;
-            }
-            .scroll-fade {
-                transition: none !important;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            /* 減少動畫模式關閉提示光環 & 3D傾斜 */
-            .music-toggle-btn.hint-ring {
-                animation: none !important;
-            }
-            .banner-3d-item {
-                transition: none !important;
-                transform: none !important;
-                text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.8) !important;
-            }
-            .banner {
-                perspective: none;
-            }
+            * { transition: none !important; animation: none !important; }
+            html { scroll-behavior: auto !important; }
+            .bar { animation: none !important; }
+            .lightbox-wrap { transition: none !important; }
+            #preloaderMask { transition: none !important; }
+            .custom-cursor { transition: none !important; }
+            .scroll-fade { transition: none !important; opacity: 1 !important; transform: none !important; }
+            .music-toggle-btn.hint-ring { animation: none !important; }
+            .banner-3d-item { transition: none !important; transform: none !important; text-shadow: 0px 2px 12px rgba(0,0,0,0.8) !important; }
+            .banner { perspective: none; }
         }
     </style>
 </head>
 <body class="lock-scroll">
-    <!-- 自訂滑鼠圓點 -->
     <div class="custom-cursor"></div>
 
-    <!-- 【獨立頂層加載遮罩】 -->
     <div id="preloaderMask">
         <div class="loadNum">0%</div>
         <div class="progressBox">
@@ -966,23 +696,18 @@
         </div>
     </nav>
 
-    <!-- 圖片放大彈窗模組 -->
     <div class="image-lightbox" id="lightbox">
-        <!-- 毛玻璃容器外部的文字區域：日期在前，地點在後 -->
         <div class="lightbox-special-info" id="lightboxSpecialInfo">
             <div class="lightbox-rotated-date">2026-01-01</div>
             <div class="lightbox-location-text">清遠</div>
         </div>
-        <!-- 毛玻璃liquid glass圖片容器 -->
         <div class="lightbox-wrap" id="lightboxWrap">
-            <img class="lightbox-img" id="lightboxImg" src="" alt="大圖檢視">
+            <img class="lightbox-img" id="lightboxImg" src="" alt="大圖檢視" style="display:none;">
         </div>
     </div>
 
-    <!-- 手機版圖片彈窗返回按鈕 (liquid glass style) -->
     <button class="lightbox-close-btn" id="lightboxCloseBtn">✕</button>
 
-    <!-- Spotify 播放器 預設隱藏 -->
     <div class="spotify-glass-player hidden" id="spotifyPlayer">
         <iframe data-testid="embed-iframe" style="border-radius:12px"
             src="https://open.spotify.com/embed/album/4tPgavx8TzhK03utfMCgHL?utm_source=generator&theme=0&si=ee918be692ab4066"
@@ -991,7 +716,6 @@
         </iframe>
     </div>
 
-    <!-- 音樂開關按鈕：預設加上hint-ring啟動提示光環 -->
     <div class="music-toggle-btn hint-ring" id="toggleBtn">
         <div class="bar"></div>
         <div class="bar"></div>
@@ -999,9 +723,7 @@
         <div class="bar"></div>
     </div>
 
-    <!-- 頁面容器 -->
     <div class="page-wrap">
-        <!-- 首頁 -->
         <div class="page active" id="home">
             <section class="banner" id="bannerWrap">
                 <h1 class="banner-3d-item">@charliewong_gallery</h1>
@@ -1011,13 +733,11 @@
             </section>
             <div class="container" id="about">
                 <h2 class="section-title scroll-fade">Gallery</h2>
-                <!-- 第一行圖片組【僅第一列加上下方文字說明，新增scroll-fade滾動漸顯】 -->
                 <div class="gallery-grid scroll-fade">
                     <div>
                         <div class="gallery-item is-special" data-img="Main_page_pictures/homepage_gallery1.webp">
                             <img src="Main_page_pictures/homepage_gallery1.webp" alt="相片">
                         </div>
-                        <!-- 文字區塊加上滾動漸顯 -->
                         <div class="first-img-caption scroll-fade">
                             <div class="caption-location">清遠</div>
                             <div class="caption-date">2026-01-01</div>
@@ -1027,7 +747,6 @@
                         <img src="Main_page_pictures/homepage_gallery2.webp" alt="相片">
                     </div>
                 </div>
-                <!-- 第二行圖片組 -->
                 <div class="gallery-grid scroll-fade">
                     <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery3.webp">
                         <img src="Main_page_pictures/homepage_gallery3.webp" alt="相片">
@@ -1059,7 +778,6 @@
             </footer>
         </div>
 
-        <!-- About me -->
         <div class="page" id="aboutme">
             <div class="container">
                 <div class="about-header scroll-fade">
@@ -1073,7 +791,6 @@
             </footer>
         </div>
 
-        <!-- Gallery 完整修改：所有gallery-item加上data-img屬性，綁定彈窗 -->
         <div class="page" id="gallery">
             <div class="container">
                 <h2 class="section-title scroll-fade">Full Gallery</h2>
@@ -1108,17 +825,14 @@
         </div>
     </div>
 
-    <!-- 回到頂部按鈕 -->
     <button class="scroll-top-btn" id="scrollTopBtn">↑</button>
 
     <script>
-        // ========== Banner 3D跟隨滑鼠傾斜+立體陰影邏輯 ==========
+        // ========== Banner 3D跟隨滑鼠傾斜 ==========
         const bannerWrap = document.getElementById('bannerWrap');
         const banner3dItems = document.querySelectorAll('.banner-3d-item');
         const maxRotate = 18;
         const shadowMulti = 0.7;
-        let bannerMouseX = 0,
-            bannerMouseY = 0;
         let bannerRect = null;
 
         bannerWrap.addEventListener('mousemove', (e) => {
@@ -1127,16 +841,13 @@
             const offsetY = ((e.clientY - bannerRect.top) / bannerRect.height - 0.5) * 2;
             const rotateY = offsetX * maxRotate;
             const rotateX = -offsetY * maxRotate;
-
             const shadowX = -offsetX * maxRotate * shadowMulti;
             const shadowY = -offsetY * maxRotate * shadowMulti;
-
             banner3dItems.forEach(el => {
                 el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                 el.style.textShadow = `${shadowX}px ${shadowY}px 14px rgba(0,0,0,0.85)`;
             });
         });
-
         bannerWrap.addEventListener('mouseleave', () => {
             banner3dItems.forEach(el => {
                 el.style.transform = `rotateX(0deg) rotateY(0deg)`;
@@ -1144,23 +855,18 @@
             });
         });
 
-        // ========== 自訂滑鼠游標邏輯 ==========
+        // ========== 自訂滑鼠游標 ==========
         const cursor = document.querySelector('.custom-cursor');
-        let mouseX = 0,
-            mouseY = 0;
-        let cursorX = 0,
-            cursorY = 0;
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
         let hoverTimer = null;
-        const hoverElements = document.querySelectorAll(
-            'a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .spotify-glass-player, .lightbox-close-btn'
-            );
+        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .spotify-glass-player, .lightbox-close-btn');
         const hoverList = Array.from(hoverElements);
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
-
         function animateCursor() {
             cursorX += (mouseX - cursorX) * 0.18;
             cursorY += (mouseY - cursorY) * 0.18;
@@ -1175,31 +881,23 @@
             cursor.classList.remove('hover');
             cursor.classList.add('down');
         });
-
         document.addEventListener('mouseup', () => {
             cursor.classList.remove('down');
             clearTimeout(hoverTimer);
             hoverTimer = setTimeout(() => {
                 const hoveredEl = document.elementFromPoint(mouseX, mouseY);
                 const isHoverTarget = hoverList.some(el => el === hoveredEl || el.contains(hoveredEl));
-                if (isHoverTarget) {
-                    cursor.classList.add('hover');
-                }
+                if (isHoverTarget) cursor.classList.add('hover');
             }, 160);
         });
-
         document.addEventListener('mouseleave', () => {
             clearTimeout(hoverTimer);
-            cursor.classList.remove('down');
-            cursor.classList.remove('hover');
+            cursor.classList.remove('down', 'hover');
         });
-
         hoverList.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 clearTimeout(hoverTimer);
-                if (!cursor.classList.contains('down')) {
-                    cursor.classList.add('hover');
-                }
+                if (!cursor.classList.contains('down')) cursor.classList.add('hover');
             });
             el.addEventListener('mouseleave', () => {
                 clearTimeout(hoverTimer);
@@ -1207,22 +905,17 @@
             });
         });
 
-        // ========== 滾動漸顯觀察器 ==========
+        // ========== 滾動漸顯 ==========
         const fadeItems = document.querySelectorAll('.scroll-fade');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('scroll-show');
-                } else {
-                    entry.target.classList.remove('scroll-show');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('scroll-show');
+                else entry.target.classList.remove('scroll-show');
             });
-        }, {
-            rootMargin: "0px 0px -100px 0px"
-        });
+        }, { rootMargin: "0px 0px -100px 0px" });
         fadeItems.forEach(item => observer.observe(item));
 
-        // ========== 載入遮罩關閉邏輯 ==========
+        // ========== 載入遮罩 ==========
         const mask = document.getElementById('preloaderMask');
         const numText = document.querySelector('.loadNum');
         const fillBar = document.getElementById('barFill');
@@ -1230,7 +923,6 @@
         const cnBtn = document.getElementById('enterCn');
         const enBtn = document.getElementById('enterEn');
         const bodyEl = document.body;
-        const lightboxSpecialInfo = document.getElementById('lightboxSpecialInfo');
 
         const totalTime = 4000;
         const stepMs = 50;
@@ -1239,124 +931,246 @@
 
         function runProgress() {
             currentPercent += increment;
-            if (currentPercent >= 100) {
-                currentPercent = 100;
-                clearInterval(progressTimer);
-            }
+            if (currentPercent >= 100) { currentPercent = 100; clearInterval(progressTimer); }
             numText.textContent = Math.floor(currentPercent) + "%";
             fillBar.style.width = currentPercent + "%";
         }
         const progressTimer = setInterval(runProgress, stepMs);
 
-        setTimeout(() => {
-            btnBox.classList.add('showBtn');
-        }, totalTime);
+        setTimeout(() => { btnBox.classList.add('showBtn'); }, totalTime);
 
         function closeMask() {
             if (currentPercent === 100) {
                 mask.classList.add('hideMask');
                 bodyEl.classList.remove('lock-scroll');
+                startPreloading();
             }
         }
         cnBtn.addEventListener('click', closeMask);
         enBtn.addEventListener('click', closeMask);
 
-        // ========== 頁面導航切換邏輯 ==========
+        // ========== 頁面導航 ==========
         const navLinks = document.querySelectorAll('[data-page]');
         const pages = document.querySelectorAll('.page');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-page');
-                // 切換頁面先滾動到頂部
                 window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                // 清除所有頁面激活狀態
                 pages.forEach(page => page.classList.remove('active'));
-                // 激活目標頁面
                 document.getElementById(targetId).classList.add('active');
-                // 重新註冊滾動漸顯觀察器，避免切換頁面後淡入失效
-                setTimeout(() => {
-                    fadeItems.forEach(item => observer.observe(item));
-                }, 100);
-            })
+                setTimeout(() => { fadeItems.forEach(item => observer.observe(item)); }, 100);
+            });
         });
 
-        // ========== 圖片彈窗完整點擊邏輯 ==========
+        // ========== 智能圖片預加載系統 ==========
+        const preloadCache = new Map();
+
+        function collectPreloadUrls() {
+            const galleryItems = document.querySelectorAll('.gallery-item[data-img]');
+            const urls = [];
+            galleryItems.forEach(item => {
+                const src = item.getAttribute('data-img');
+                if (src && !preloadCache.has(src)) {
+                    urls.push(src);
+                }
+            });
+            return urls;
+        }
+
+        function preloadImage(url) {
+            return new Promise((resolve) => {
+                if (preloadCache.has(url)) {
+                    resolve(preloadCache.get(url));
+                    return;
+                }
+                const img = new Image();
+                img.onload = () => {
+                    preloadCache.set(url, img);
+                    resolve(img);
+                };
+                img.onerror = () => {
+                    preloadCache.set(url, null);
+                    resolve(null);
+                };
+                img.src = url;
+            });
+        }
+
+        async function batchPreload(urls) {
+            const batchSize = 2;
+            const delayBetweenBatches = 200;
+            for (let i = 0; i < urls.length; i += batchSize) {
+                const batch = urls.slice(i, i + batchSize);
+                await Promise.all(batch.map(url => preloadImage(url)));
+                if (i + batchSize < urls.length) {
+                    await new Promise(r => setTimeout(r, delayBetweenBatches));
+                }
+            }
+        }
+
+        function preloadWhenIdle(urls) {
+            if (urls.length === 0) return;
+            let index = 0;
+            function processNext(deadline) {
+                while (index < urls.length && (deadline.timeRemaining() > 5 || deadline.didTimeout)) {
+                    const url = urls[index];
+                    if (!preloadCache.has(url)) {
+                        const img = new Image();
+                        img.onload = () => { preloadCache.set(url, img); };
+                        img.onerror = () => { preloadCache.set(url, null); };
+                        img.src = url;
+                    }
+                    index++;
+                }
+                if (index < urls.length) {
+                    requestIdleCallback(processNext, { timeout: 500 });
+                }
+            }
+            requestIdleCallback(processNext, { timeout: 500 });
+        }
+
+        function startPreloading() {
+            const urls = collectPreloadUrls();
+            if (urls.length === 0) return;
+            if (typeof requestIdleCallback !== 'undefined') {
+                preloadWhenIdle(urls);
+            } else {
+                batchPreload(urls);
+            }
+        }
+
+        if (document.readyState === 'complete') {
+            startPreloading();
+        } else {
+            window.addEventListener('load', () => {
+                setTimeout(startPreloading, 500);
+            });
+        }
+
+        const preloadObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const item = entry.target;
+                    const src = item.getAttribute('data-img');
+                    if (src && !preloadCache.has(src)) {
+                        preloadImage(src);
+                    }
+                    preloadObserver.unobserve(item);
+                }
+            });
+        }, { rootMargin: "200px" });
+
+        document.querySelectorAll('.gallery-item[data-img]').forEach(item => {
+            preloadObserver.observe(item);
+        });
+
+        // ========== 圖片彈窗邏輯（徹底修復閃爍） ==========
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxWrap = document.getElementById('lightboxWrap');
         const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+        const lightboxSpecialInfo = document.getElementById('lightboxSpecialInfo');
         const galleryItems = document.querySelectorAll('.gallery-item[data-img]');
 
-        // 鎖定滾動：記住目前位置，补偽滾動條寬度，用 overscroll + touchmove 防止滾動
         let _scrollY = 0;
+        let currentLightboxSrc = '';
 
         function onTouchMove(e) { e.preventDefault(); }
-
         function lockScroll() {
             _scrollY = window.scrollY;
             const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
             document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
             bodyEl.classList.add('lock-scroll');
-            // 桌面端：由 overflow:hidden on html 鎖定
             document.documentElement.style.overflow = 'hidden';
-            // 手機端：由 touchmove preventDefault 鎖定
             document.addEventListener('touchmove', onTouchMove, { passive: false });
         }
-
         function unlockScroll() {
             bodyEl.classList.remove('lock-scroll');
             document.documentElement.style.overflow = '';
             document.documentElement.style.setProperty('--scrollbar-width', '0px');
             document.removeEventListener('touchmove', onTouchMove);
-            // 恢復滾動位置
             window.scrollTo({ top: _scrollY, left: 0, behavior: 'instant' });
         }
 
-        // 關閉 lightbox 的函數
         function closeLightbox() {
             lightbox.classList.remove('active');
             lightboxCloseBtn.classList.remove('show');
+            // 關閉時清空 src 並隱藏，確保下次打開不會閃現舊圖
+            lightboxImg.src = '';
+            lightboxImg.style.display = 'none';
+            currentLightboxSrc = '';
             unlockScroll();
+        }
+
+        function showImageInLightbox(src) {
+            // 如果是同一張圖片，直接顯示
+            if (currentLightboxSrc === src && lightboxImg.style.display !== 'none') {
+                lightbox.classList.add('active');
+                if (window.innerWidth <= 768) {
+                    lightboxCloseBtn.classList.add('show');
+                }
+                return;
+            }
+
+            // 更新當前 src 記錄
+            currentLightboxSrc = src;
+
+            // 關鍵：先完全隱藏 img 元素並清空 src，徹底防止舊圖閃現
+            lightboxImg.style.display = 'none';
+            lightboxImg.src = '';
+
+            // 顯示彈窗背景
+            lightbox.classList.add('active');
+            if (window.innerWidth <= 768) {
+                lightboxCloseBtn.classList.add('show');
+            }
+
+            // 檢查是否已預加載
+            if (preloadCache.has(src) && preloadCache.get(src)) {
+                // 已預加載，直接設置 src 並顯示
+                lightboxImg.src = src;
+                lightboxImg.style.display = 'block';
+            } else {
+                // 未預加載，建立新的 Image 物件來加載
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    // 只有在 src 仍然匹配時才更新（防止快速點擊不同圖片）
+                    if (currentLightboxSrc === src) {
+                        preloadCache.set(src, tempImg);
+                        lightboxImg.src = src;
+                        lightboxImg.style.display = 'block';
+                    }
+                };
+                tempImg.onerror = function() {
+                    if (currentLightboxSrc === src) {
+                        preloadCache.set(src, null);
+                        // 加載失敗也顯示（顯示空白），避免永遠隱藏
+                        lightboxImg.style.display = 'block';
+                    }
+                };
+                tempImg.src = src;
+            }
         }
 
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
                 const src = item.dataset.img;
-                // 先清空並移除 active，避免閃舊圖和錯誤標題
-                lightboxImg.src = '';
-                lightbox.classList.remove('active');
-                lightboxCloseBtn.classList.remove('show');
-                // 僅特殊圖片顯示外部文字區塊
+
+                // 設置特殊信息顯示
                 if (item.classList.contains('is-special')) {
                     lightboxSpecialInfo.style.display = 'flex';
                 } else {
                     lightboxSpecialInfo.style.display = 'none';
                 }
-                // 鎖定滾動並補偽滾動條寬度，防止版面跳動
+
                 lockScroll();
-                // 圖片真正加載完成後才顯示 lightbox
-                lightboxImg.onload = function() {
-                    lightbox.classList.add('active');
-                    // 手機版顯示返回按鈕 (僅在螢幕寬度 <= 768px 時)
-                    if (window.innerWidth <= 768) {
-                        lightboxCloseBtn.classList.add('show');
-                    }
-                };
-                lightboxImg.onerror = function() {
-                    lightbox.classList.add('active');
-                    if (window.innerWidth <= 768) {
-                        lightboxCloseBtn.classList.add('show');
-                    }
-                };
-                lightboxImg.src = src;
+                showImageInLightbox(src);
             });
         });
 
         // 點擊彈窗背景區域關閉
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
+            if (e.target === lightbox) closeLightbox();
         });
 
         // 點擊手機版返回按鈕關閉
@@ -1374,7 +1188,7 @@
             setTimeout(() => lightboxWrap.classList.remove('press'), 150);
         });
 
-        // ========== 回到頂部按鈕邏輯 ==========
+        // ========== 回到頂部按鈕 ==========
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
             scrollTopBtn.classList.toggle('show', window.scrollY > 300);
@@ -1385,18 +1199,15 @@
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         });
 
-        // ========== Spotify音樂播放器開關邏輯 ==========
+        // ========== Spotify音樂播放器 ==========
         const spotifyPlayer = document.getElementById('spotifyPlayer');
         const toggleBtn = document.getElementById('toggleBtn');
         let playerOpen = false;
 
         toggleBtn.addEventListener('click', () => {
-            // 第一次點擊移除初始提示呼吸光環
             toggleBtn.classList.remove('hint-ring');
-            // 點擊彈跳動畫
             toggleBtn.classList.add('click-bounce');
             setTimeout(() => toggleBtn.classList.remove('click-bounce'), 300);
-            // 切換播放器顯示隱藏狀態
             playerOpen = !playerOpen;
             spotifyPlayer.classList.toggle('hidden', !playerOpen);
             toggleBtn.classList.toggle('paused', !playerOpen);
