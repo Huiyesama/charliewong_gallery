@@ -20,7 +20,8 @@
             /* 隱藏原生滑鼠指標 */
             cursor: none !important;
         }
-        html, body {
+        html,
+        body {
             overflow-x: clip;
             max-width: 100%;
         }
@@ -151,24 +152,31 @@
         /* 文字发光呼吸闪烁动画 纯白光晕 3秒缓慢循环 */
         @keyframes glowBlink {
             0% {
-                text-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 8px rgba(255,255,255,0.2);
+                text-shadow: 0 0 4px rgba(255, 255, 255, 0.3), 0 0 8px rgba(255, 255, 255, 0.2);
             }
             50% {
-                text-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.6);
+                text-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.6);
             }
             100% {
-                text-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 8px rgba(255,255,255,0.2);
+                text-shadow: 0 0 4px rgba(255, 255, 255, 0.3), 0 0 8px rgba(255, 255, 255, 0.2);
             }
         }
 
         /* 音樂按鈕 & 返回頂部按鈕 共用點擊彈跳動畫 */
         @keyframes btnBounce {
-            0% { transform: translateZ(0) scale(1); }
-            50% { transform: translateZ(0) scale(0.85); }
-            100% { transform: translateZ(0) scale(1); }
+            0% {
+                transform: translateZ(0) scale(1);
+            }
+            50% {
+                transform: translateZ(0) scale(0.85);
+            }
+            100% {
+                transform: translateZ(0) scale(1);
+            }
         }
         .music-toggle-btn.click-bounce,
-        .scroll-top-btn.click-bounce {
+        .scroll-top-btn.click-bounce,
+        .lightbox-close-btn.click-bounce {
             animation: btnBounce 0.3s ease-out;
         }
 
@@ -210,7 +218,8 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
-        .btnCn:hover, .btnEn:hover {
+        .btnCn:hover,
+        .btnEn:hover {
             opacity: 0.6;
         }
 
@@ -253,7 +262,8 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover,
+        .nav-links a.active {
             color: #ffffff;
         }
 
@@ -306,8 +316,8 @@
         /* 首頁橫幅 3D透視容器 */
         .banner {
             height: 100vh;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.4) 60%, #000 100%),
-            url("Main_page_pictures/homepage_1.webp") center/cover no-repeat;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 60%, #000 100%),
+                url("Main_page_pictures/homepage_1.webp") center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -352,7 +362,7 @@
         /* 玻璃按鈕 */
         .glass-btn {
             transform: translateZ(0);
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
@@ -364,14 +374,13 @@
             cursor: pointer;
         }
         .glass-btn:hover {
-            background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
-            border-color: rgba(255,255,255,0.35);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
+            border-color: rgba(255, 255, 255, 0.35);
             transform: translateZ(0) translateY(-2px);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.22),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 12px 36px rgba(0,0,0,0.55);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 12px 36px rgba(0, 0, 0, 0.55);
         }
 
         .more-btn-wrap {
@@ -400,7 +409,7 @@
             background: #1c1c1c;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(80,80,80,0.15);
+            box-shadow: 0 4px 12px rgba(80, 80, 80, 0.15);
             transition: transform 0.3s ease;
         }
         .card:hover {
@@ -421,7 +430,7 @@
             border-radius: 12px;
             overflow: hidden;
             background: #1c1c1c;
-            box-shadow: 0 4px 12px rgba(80,80,80,0.15);
+            box-shadow: 0 4px 12px rgba(80, 80, 80, 0.15);
             transition: transform 0.3s ease;
             cursor: pointer;
         }
@@ -473,15 +482,14 @@
             border-radius: 50%;
             z-index: 1001;
             transform: translateZ(0);
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.06),
-                inset 0 1px 0 rgba(255,255,255,0.16),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.45);
             border: none;
             cursor: pointer;
             opacity: 0;
@@ -499,13 +507,56 @@
             visibility: visible;
         }
         .scroll-top-btn:hover {
-            border-color: rgba(255,255,255,0.35);
+            border-color: rgba(255, 255, 255, 0.35);
             transform: translateZ(0) translateY(-3px);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.22),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 14px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 14px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ========== 手機版圖片彈窗返回按鈕 (liquid glass style) ========== */
+        .lightbox-close-btn {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            z-index: 10001;
+            /* 高於 lightbox (z-index:9999) */
+            transform: translateZ(0);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(22px) saturate(140%);
+            -webkit-backdrop-filter: blur(22px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.45);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 桌面版預設隱藏，手機版才顯示 */
+        }
+        .lightbox-close-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-close-btn:hover {
+            border-color: rgba(255, 255, 255, 0.35);
+            transform: translateZ(0) translateY(-3px);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 14px 40px rgba(0, 0, 0, 0.6);
         }
 
         /* Spotify播放器容器（加入hover識別） */
@@ -515,17 +566,16 @@
             bottom: 90px;
             z-index: 1000;
             transform: translateZ(0);
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
             border-radius: 24px;
             padding: 14px;
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.06),
-                inset 0 1px 0 rgba(255,255,255,0.16),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.45);
             width: 420px;
             transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
         }
@@ -535,12 +585,11 @@
             pointer-events: none;
         }
         .spotify-glass-player:hover {
-            border-color: rgba(255,255,255,0.35);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.22),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 12px 36px rgba(0,0,0,0.55);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 12px 36px rgba(0, 0, 0, 0.55);
         }
 
         /* 音樂切換按鈕 位置維持不變 */
@@ -553,15 +602,14 @@
             border-radius: 50%;
             z-index: 1001;
             transform: translateZ(0);
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.06),
-                inset 0 1px 0 rgba(255,255,255,0.16),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.45);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -570,13 +618,12 @@
             transition: all 0.3s ease;
         }
         .music-toggle-btn:hover {
-            border-color: rgba(255,255,255,0.35);
+            border-color: rgba(255, 255, 255, 0.35);
             transform: translateZ(0) translateY(-3px);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.22),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 14px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 14px 40px rgba(0, 0, 0, 0.6);
         }
         .bar {
             width: 6px;
@@ -584,17 +631,35 @@
             border-radius: 3px;
             animation: barAnim 1.2s infinite ease-in-out alternate;
         }
-        .bar:nth-child(1) { height: 14px; animation-delay: 0s; }
-        .bar:nth-child(2) { height: 24px; animation-delay: 0.15s; }
-        .bar:nth-child(3) { height: 18px; animation-delay: 0.3s; }
-        .bar:nth-child(4) { height: 28px; animation-delay: 0.45s; }
+        .bar:nth-child(1) {
+            height: 14px;
+            animation-delay: 0s;
+        }
+        .bar:nth-child(2) {
+            height: 24px;
+            animation-delay: 0.15s;
+        }
+        .bar:nth-child(3) {
+            height: 18px;
+            animation-delay: 0.3s;
+        }
+        .bar:nth-child(4) {
+            height: 28px;
+            animation-delay: 0.45s;
+        }
         .music-toggle-btn.paused .bar {
             animation: none;
             height: 8px;
         }
         @keyframes barAnim {
-            0% { transform: scaleY(0.4); opacity: 0.5; }
-            100% { transform: scaleY(1); opacity: 1; }
+            0% {
+                transform: scaleY(0.4);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
         }
 
         /* 圖片彈窗 桌面端：日期顺时针转90度竖排 + 地点竖排，和图片垂直居中 */
@@ -602,7 +667,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(0,0,0,0.45);
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(20px) saturate(120%);
             -webkit-backdrop-filter: blur(20px) saturate(120%);
             display: flex;
@@ -621,15 +686,14 @@
         .lightbox-wrap {
             padding: 16px;
             border-radius: 20px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
             backdrop-filter: blur(22px) saturate(140%);
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.06),
-                inset 0 1px 0 rgba(255,255,255,0.16),
-                inset 0 -1px 0 rgba(0,0,0,0.25),
-                0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.45);
             max-width: 90vw;
             max-height: 90vh;
             cursor: pointer;
@@ -682,7 +746,8 @@
         }
 
         /* ========== 手機響應式全域修正 ========== */
-        @media (max-width: 768px), (hover: none) {
+        @media (max-width: 768px),
+        (hover: none) {
             * {
                 cursor: auto !important;
             }
@@ -696,7 +761,7 @@
             .banner-3d-item {
                 transition: none !important;
                 transform: none !important;
-                text-shadow: 0px 2px 12px rgba(0,0,0,0.8) !important;
+                text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.8) !important;
             }
         }
         @media (max-width: 768px) {
@@ -728,10 +793,10 @@
             }
             .nav-links {
                 flex-wrap: wrap;
-                gap:1rem;
+                gap: 1rem;
             }
             .nav-links a {
-                margin-left:0;
+                margin-left: 0;
             }
             .banner h1 {
                 /* 手機端继承全局 clamp 即可，不需要覆写 */
@@ -745,35 +810,41 @@
             }
             .about-header {
                 flex-direction: column;
-                text-align:center;
-                gap:20px;
+                text-align: center;
+                gap: 20px;
             }
             .about-username {
-                font-size:32px;
+                font-size: 32px;
             }
             .gallery-grid {
                 grid-template-columns: 1fr;
                 margin-bottom: 32px;
-                gap:20px;
+                gap: 20px;
             }
             .gallery-item img {
                 height: 260px;
             }
+            /* 手機版 Spotify 播放器位置上調 */
             .spotify-glass-player {
                 width: calc(100% - 40px);
                 left: 20px;
                 right: 20px;
-                bottom:80px;
+                bottom: 120px;
             }
-            .music-toggle-btn, .scroll-top-btn {
+            /* 手機版音樂切換按鈕位置上調 */
+            .music-toggle-btn {
                 width: 56px;
                 height: 56px;
-                bottom: 20px;
+                bottom: 50px;
             }
             .bar {
                 width: 5px;
             }
+            /* 手機版回到頂部按鈕位置上調 */
             .scroll-top-btn {
+                width: 56px;
+                height: 56px;
+                bottom: 50px;
                 font-size: 24px;
             }
             .lightbox-wrap {
@@ -788,7 +859,7 @@
             .lightbox-special-info {
                 gap: 10px;
                 align-items: center;
-                padding-left:6px;
+                padding-left: 6px;
                 flex-direction: row;
                 /* 順序交換：地點在前，日期在後 */
                 flex-flow: row;
@@ -797,13 +868,30 @@
             .lightbox-rotated-date {
                 font-size: 11px;
                 transform: rotate(0deg);
-                order: 2; /* 日期排第二 */
+                order: 2;
+                /* 日期排第二 */
             }
             .lightbox-location-text {
                 font-size: 26px;
                 writing-mode: horizontal-tb;
                 letter-spacing: 2px;
-                order: 1; /* 地點排第一 */
+                order: 1;
+                /* 地點排第一 */
+            }
+            /* 手機版顯示返回按鈕，位置上調 */
+            .lightbox-close-btn {
+                display: flex;
+                width: 56px;
+                height: 56px;
+                right: 30px;
+                bottom: 50px;
+                font-size: 24px;
+            }
+        }
+        /* 桌面版隱藏返回按鈕 */
+        @media (min-width: 769px) {
+            .lightbox-close-btn {
+                display: none !important;
             }
         }
 
@@ -815,9 +903,15 @@
             html {
                 scroll-behavior: auto !important;
             }
-            .bar { animation: none !important; }
-            .lightbox-wrap { transition: none !important; }
-            #preloaderMask { transition: none !important; }
+            .bar {
+                animation: none !important;
+            }
+            .lightbox-wrap {
+                transition: none !important;
+            }
+            #preloaderMask {
+                transition: none !important;
+            }
             .custom-cursor {
                 transition: none !important;
             }
@@ -833,7 +927,7 @@
             .banner-3d-item {
                 transition: none !important;
                 transform: none !important;
-                text-shadow: 0px 2px 12px rgba(0,0,0,0.8) !important;
+                text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.8) !important;
             }
             .banner {
                 perspective: none;
@@ -885,13 +979,15 @@
         </div>
     </div>
 
+    <!-- 手機版圖片彈窗返回按鈕 (liquid glass style) -->
+    <button class="lightbox-close-btn" id="lightboxCloseBtn">✕</button>
+
     <!-- Spotify 播放器 預設隱藏 -->
     <div class="spotify-glass-player hidden" id="spotifyPlayer">
-        <iframe data-testid="embed-iframe" style="border-radius:12px" 
-        src="https://open.spotify.com/embed/album/4tPgavx8TzhK03utfMCgHL?utm_source=generator&theme=0&si=ee918be692ab4066" 
-        width="100%" height="152" frameBorder="0" allowfullscreen="" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
+        <iframe data-testid="embed-iframe" style="border-radius:12px"
+            src="https://open.spotify.com/embed/album/4tPgavx8TzhK03utfMCgHL?utm_source=generator&theme=0&si=ee918be692ab4066"
+            width="100%" height="152" frameBorder="0" allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
         </iframe>
     </div>
 
@@ -1021,7 +1117,8 @@
         const banner3dItems = document.querySelectorAll('.banner-3d-item');
         const maxRotate = 18;
         const shadowMulti = 0.7;
-        let bannerMouseX = 0, bannerMouseY = 0;
+        let bannerMouseX = 0,
+            bannerMouseY = 0;
         let bannerRect = null;
 
         bannerWrap.addEventListener('mousemove', (e) => {
@@ -1049,10 +1146,14 @@
 
         // ========== 自訂滑鼠游標邏輯 ==========
         const cursor = document.querySelector('.custom-cursor');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+        let mouseX = 0,
+            mouseY = 0;
+        let cursorX = 0,
+            cursorY = 0;
         let hoverTimer = null;
-        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .spotify-glass-player');
+        const hoverElements = document.querySelectorAll(
+            'a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .spotify-glass-player, .lightbox-close-btn'
+            );
         const hoverList = Array.from(hoverElements);
 
         document.addEventListener('mousemove', (e) => {
@@ -1161,13 +1262,13 @@
         enBtn.addEventListener('click', closeMask);
 
         // ========== 頁面導航切換邏輯 ==========
-                const navLinks = document.querySelectorAll('[data-page]');
+        const navLinks = document.querySelectorAll('[data-page]');
         const pages = document.querySelectorAll('.page');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const targetId = link.getAttribute('data-page');
                 // 切換頁面先滾動到頂部
-                window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                 // 清除所有頁面激活狀態
                 pages.forEach(page => page.classList.remove('active'));
                 // 激活目標頁面
@@ -1183,21 +1284,25 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxWrap = document.getElementById('lightboxWrap');
+        const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
         const galleryItems = document.querySelectorAll('.gallery-item[data-img]');
 
         // 鎖定滾動：記住目前位置，补偽滾動條寬度，用 overscroll + touchmove 防止滾動
         let _scrollY = 0;
+
         function onTouchMove(e) { e.preventDefault(); }
+
         function lockScroll() {
             _scrollY = window.scrollY;
             const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
             document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
             bodyEl.classList.add('lock-scroll');
-            // 桃面端：由 overflow:hidden on html 鎖定
+            // 桌面端：由 overflow:hidden on html 鎖定
             document.documentElement.style.overflow = 'hidden';
             // 手機端：由 touchmove preventDefault 鎖定
             document.addEventListener('touchmove', onTouchMove, { passive: false });
         }
+
         function unlockScroll() {
             bodyEl.classList.remove('lock-scroll');
             document.documentElement.style.overflow = '';
@@ -1207,26 +1312,41 @@
             window.scrollTo({ top: _scrollY, left: 0, behavior: 'instant' });
         }
 
+        // 關閉 lightbox 的函數
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lightboxCloseBtn.classList.remove('show');
+            unlockScroll();
+        }
+
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
                 const src = item.dataset.img;
-                // 先清空扊移除 active，避免閃諌舊圖和財面標題
+                // 先清空並移除 active，避免閃舊圖和錯誤標題
                 lightboxImg.src = '';
                 lightbox.classList.remove('active');
+                lightboxCloseBtn.classList.remove('show');
                 // 僅特殊圖片顯示外部文字區塊
                 if (item.classList.contains('is-special')) {
                     lightboxSpecialInfo.style.display = 'flex';
                 } else {
                     lightboxSpecialInfo.style.display = 'none';
                 }
-                // 鎖定滾動並补偽滾動條寬度，防止版面跳動
+                // 鎖定滾動並補偽滾動條寬度，防止版面跳動
                 lockScroll();
                 // 圖片真正加載完成後才顯示 lightbox
-                lightboxImg.onload = function () {
+                lightboxImg.onload = function() {
                     lightbox.classList.add('active');
+                    // 手機版顯示返回按鈕 (僅在螢幕寬度 <= 768px 時)
+                    if (window.innerWidth <= 768) {
+                        lightboxCloseBtn.classList.add('show');
+                    }
                 };
-                lightboxImg.onerror = function () {
+                lightboxImg.onerror = function() {
                     lightbox.classList.add('active');
+                    if (window.innerWidth <= 768) {
+                        lightboxCloseBtn.classList.add('show');
+                    }
                 };
                 lightboxImg.src = src;
             });
@@ -1235,16 +1355,23 @@
         // 點擊彈窗背景區域關閉
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-                unlockScroll();
+                closeLightbox();
             }
+        });
+
+        // 點擊手機版返回按鈕關閉
+        lightboxCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxCloseBtn.classList.add('click-bounce');
+            setTimeout(() => lightboxCloseBtn.classList.remove('click-bounce'), 300);
+            closeLightbox();
         });
 
         // 點擊圖片容器觸發按壓彈跳反饋
         lightboxWrap.addEventListener('click', (e) => {
             e.stopPropagation();
             lightboxWrap.classList.add('press');
-            setTimeout(()=>lightboxWrap.classList.remove('press'), 150);
+            setTimeout(() => lightboxWrap.classList.remove('press'), 150);
         });
 
         // ========== 回到頂部按鈕邏輯 ==========
@@ -1254,8 +1381,8 @@
         });
         scrollTopBtn.addEventListener('click', () => {
             scrollTopBtn.classList.add('click-bounce');
-            setTimeout(()=>scrollTopBtn.classList.remove('click-bounce'),300);
-            window.scrollTo({top:0,left:0,behavior:'smooth'});
+            setTimeout(() => scrollTopBtn.classList.remove('click-bounce'), 300);
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         });
 
         // ========== Spotify音樂播放器開關邏輯 ==========
@@ -1268,7 +1395,7 @@
             toggleBtn.classList.remove('hint-ring');
             // 點擊彈跳動畫
             toggleBtn.classList.add('click-bounce');
-            setTimeout(()=>toggleBtn.classList.remove('click-bounce'),300);
+            setTimeout(() => toggleBtn.classList.remove('click-bounce'), 300);
             // 切換播放器顯示隱藏狀態
             playerOpen = !playerOpen;
             spotifyPlayer.classList.toggle('hidden', !playerOpen);
