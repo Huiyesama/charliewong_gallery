@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>@charliewong_gallery</title>
+    <!-- 預先連接 Google Fonts 以提高載入速度 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+    <!-- 導入字體:Homemade Apple(英文手寫體)、LXGW WenKai TC(中文楷體,含light 300字重) -->
+    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=LXGW+WenKai+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* ========== 全局基礎樣式重置 ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft JhengHei", sans-serif;
-            cursor: none !important;
+            cursor: none !important; /* 隱藏默認鼠標,使用自定義鼠標 */
         }
         html,
         body {
-            overflow-x: clip;
+            overflow-x: clip; /* 防止水平滾動條出現 */
             max-width: 100%;
         }
         
@@ -30,12 +29,14 @@
             line-height: 1.6;
             padding-bottom: 200px;
             position: relative;
-            padding-top: calc(1rem + 60px);
+            padding-top: calc(1rem + 60px); /* 為固定導航欄留出空間 */
         }
+        /* 鎖定滾動時，補償滾動條寬度，防止頁面抖動 */
         body.lock-scroll {
             padding-right: var(--scrollbar-width, 0px);
         }
 
+        /* ========== 滾動漸顯動畫 ========== */
         .scroll-fade {
             opacity: 0;
             transform: translateY(24px);
@@ -46,26 +47,30 @@
             transform: translateY(0);
         }
 
+        /* ========== 自定義鼠標樣式 ========== */
         .custom-cursor {
             position: fixed;
             width: 12px;
             height: 12px;
             background: #ffffff;
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999999;
+            pointer-events: none; /* 鼠標不阻擋點擊事件 */
+            z-index: 9999999; /* 確保鼠標在所有元素之上 */
             transform: translate(-50%, -50%) scale(1);
             transition: transform 0.5s ease-out;
             mix-blend-mode: normal;
         }
+        /* 鼠標按下時縮小 */
         .custom-cursor.down {
             transform: translate(-50%, -50%) scale(0.4);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        /* 懸停在可點擊元素上時放大 */
         .custom-cursor.hover {
             transform: translate(-50%, -50%) scale(1.8);
         }
 
+        /* ========== 預加載遮罩層 ========== */
         #preloaderMask {
             position: fixed;
             top: 0;
@@ -82,10 +87,12 @@
             transition: opacity 0.8s ease;
             opacity: 1;
         }
+        /* 隱藏遮罩層 */
         #preloaderMask.hideMask {
             opacity: 0;
             pointer-events: none;
         }
+        /* 進度數字樣式 */
         .loadNum {
             font-size: 20px;
             color: #ffffff;
@@ -95,6 +102,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
+        /* 進度條容器 */
         .progressBox {
             width: min(420px, 85vw);
             opacity: 1 !important;
@@ -102,6 +110,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
+        /* 進度條背景 */
         .progressBg {
             width: 100%;
             height: 4px;
@@ -109,6 +118,7 @@
             border-radius: 999px;
             overflow: hidden;
         }
+        /* 進度條填充 */
         .progressBar {
             height: 100%;
             width: 0%;
@@ -117,6 +127,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
+        /* 進入按鈕組 */
         .enterBtns {
             margin-top: 30px;
             display: flex;
@@ -132,21 +143,26 @@
             opacity: 1;
         }
 
+        /* ========== 動畫關鍵幀 ========== */
+        /* 文字發光閃爍動畫 */
         @keyframes glowBlink {
             0% { text-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 8px rgba(255,255,255,0.2); }
             50% { text-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.6); }
             100% { text-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 8px rgba(255,255,255,0.2); }
         }
+        /* 按鈕彈跳動畫 */
         @keyframes btnBounce {
             0% { transform: translateZ(0) scale(1); }
             50% { transform: translateZ(0) scale(0.85); }
             100% { transform: translateZ(0) scale(1); }
         }
+        /* 按鈕彈跳效果應用 */
         .music-toggle-btn.click-bounce,
         .scroll-top-btn.click-bounce,
         .lightbox-close-btn.click-bounce {
             animation: btnBounce 0.3s ease-out;
         }
+        /* 音樂按鈕提示光圈動畫 */
         @keyframes pulseHintRing {
             0% { box-shadow: 0 0 0 0px rgba(255,255,255,0.6); }
             100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
@@ -155,11 +171,13 @@
             animation: pulseHintRing 2.2s infinite ease-out;
         }
 
+        /* 進入按鈕發光效果 */
         .enterBtns.showBtn .btnCn,
         .enterBtns.showBtn .btnEn {
             animation: glowBlink 3s infinite ease-in-out;
         }
 
+        /* 中文進入按鈕 */
         .btnCn {
             font-family: "LXGW WenKai TC", serif;
             font-size: 28px;
@@ -169,6 +187,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
         }
+        /* 英文進入按鈕 */
         .btnEn {
             font-family: "Homemade Apple", cursive;
             font-size: 24px;
@@ -180,6 +199,7 @@
         }
         .btnCn:hover, .btnEn:hover { opacity: 0.6; }
 
+        /* ========== 導航欄 ========== */
         nav {
             background: #1a1a1a;
             padding: 1rem 5%;
@@ -207,6 +227,7 @@
             cursor: pointer;
         }
         .logo-text { color: white; font-size: 22px; font-weight: bold; }
+        /* 導航鏈接 */
         .nav-links a {
             color: #cccccc;
             text-decoration: none;
@@ -217,6 +238,7 @@
         }
         .nav-links a:hover, .nav-links a.active { color: #ffffff; }
 
+        /* ========== 頁面切換容器 ========== */
         .page-wrap {
             position: relative;
             width: 100%;
@@ -236,6 +258,7 @@
         }
         .page.active { visibility: visible; opacity: 1; }
 
+        /* ========== 關於我頁面 ========== */
         #aboutme { background: #000; }
         .about-header {
             display: flex;
@@ -252,6 +275,7 @@
         }
         .about-username { font-size: 48px; font-weight: bold; color: #fff; }
 
+        /* ========== 首頁橫幅 ========== */
         .banner {
             height: 100vh;
             background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.4) 60%, #000 100%),
@@ -264,9 +288,10 @@
             text-align: center;
             padding: 0 20px;
             margin-bottom: -1px;
-            perspective: 1200px;
+            perspective: 1200px; /* 3D透視效果 */
             perspective-origin: center center;
         }
+        /* 3D文字效果 */
         .banner-3d-item {
             transition: transform 0.06s ease-out, text-shadow 0.06s ease-out;
             transform-style: preserve-3d;
@@ -284,10 +309,11 @@
         .banner-cn.banner-3d-item { font-family: "LXGW WenKai TC", serif; font-size: 22px; margin-bottom: 8px; }
         .banner-en.banner-3d-item { font-family: "Homemade Apple", cursive; font-size: 14px; margin-bottom: 30px; opacity: 0.9; }
 
+        /* ========== 玻璃質感按鈕 ========== */
         .glass-btn {
             transform: translateZ(0);
             background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-            backdrop-filter: blur(22px) saturate(140%);
+            backdrop-filter: blur(22px) saturate(140%); /* 毛玻璃效果 */
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255,255,255,0.22);
             color: #ffffff;
@@ -304,14 +330,17 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 12px 36px rgba(0,0,0,0.55);
         }
 
+        /* ========== 通用布局 ========== */
         .more-btn-wrap { text-align: center; margin: 40px 0 100px; }
         .container { max-width: 1200px; margin: 0 auto 80px auto; padding: 80px 20px 0; background: #000; }
         .section-title { text-align: center; font-size: 32px; margin-bottom: 50px; color: #ffffff; }
+        /* 卡片網格 */
         .card-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
         .card { background: #1c1c1c; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(80,80,80,0.15); transition: transform 0.3s ease; }
         .card:hover { transform: translateY(-8px); }
         .card h3 { margin-bottom: 12px; color: #ffffff; }
 
+        /* ========== 畫廊網格 ========== */
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 48px; }
         .gallery-item {
             border-radius: 12px;
@@ -325,12 +354,143 @@
         .gallery-item:hover { transform: translateY(-6px); }
         .gallery-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; pointer-events: none; }
 
-        .first-img-caption { margin-top: 12px; padding-left: 4px; }
-        .caption-location { font-size: 32px; font-weight: bold; line-height: 1.2; font-family: "LXGW WenKai TC", serif; }
-        .caption-date { font-size: 14px; font-weight: bold; line-height: 1.4; opacity: 0.8; font-family: "LXGW WenKai TC", serif; }
+        /* ========== 圖片說明文字樣式 ========== */
+        .gallery-caption {
+            margin-top: 12px;
+            padding-left: 4px;
+            padding-right: 4px;
+            text-align: left;
+        }
+        /* 偶數項目的說明文字靠右對齊 */
+        .gallery-grid > div:nth-child(even) .gallery-caption {
+            text-align: right;
+        }
+        .caption-location {
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 1.2;
+            font-family: "LXGW WenKai TC", serif;
+        }
+        .caption-date {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.4;
+            opacity: 0.8;
+            font-family: "LXGW WenKai TC", serif;
+        }
 
+        /* ========== 地區篩選器（liquid glass 按鈕式下拉選單） ========== */
+        .filter-container {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+        }
+        .gallery-filter-btn {
+            transform: translateZ(0);
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            backdrop-filter: blur(22px) saturate(140%);
+            -webkit-backdrop-filter: blur(22px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #ffffff;
+            border-radius: 30px;
+            padding: 12px 30px;
+            transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+            cursor: pointer;
+            font-size: 19px;
+            font-weight: 300;
+            font-family: "LXGW WenKai TC", serif;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
+        }
+        .gallery-filter-btn:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+            border-color: rgba(255,255,255,0.35);
+            transform: translateZ(0) translateY(-2px);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 12px 36px rgba(0,0,0,0.55);
+        }
+        .gallery-filter-btn.active {
+            background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+            border-color: rgba(255,255,255,0.4);
+        }
+        .gallery-filter-btn .arrow {
+            transition: transform 0.3s ease;
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        .gallery-filter-btn.active .arrow {
+            transform: rotate(180deg);
+        }
+        .gallery-filter-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 200px;
+            z-index: 10000;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+            backdrop-filter: blur(28px) saturate(150%);
+            -webkit-backdrop-filter: blur(28px) saturate(150%);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.25), 0 16px 48px rgba(0,0,0,0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .gallery-filter-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .gallery-filter-option {
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: "LXGW WenKai TC", serif;
+            font-size: 19px;
+            font-weight: 300;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+        .gallery-filter-option:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .gallery-filter-option.selected {
+            background: rgba(255,255,255,0.18);
+            font-weight: 700;
+        }
+        .gallery-filter-option .check {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .gallery-filter-option.selected .check {
+            opacity: 1;
+        }
+
+        /* 地區畫廊顯示/隱藏 */
+        .region-gallery {
+            display: none;
+        }
+        .region-gallery.active {
+            display: block;
+        }
+
+        /* ========== 頁尾 ========== */
         footer { background: #000000; color: white; text-align: center; padding: 30px; margin-top: 60px; }
 
+        /* ========== 回到頂部按鈕 ========== */
         .scroll-top-btn {
             position: fixed;
             right: 30px;
@@ -364,6 +524,7 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
 
+        /* ========== Lightbox關閉按鈕 ========== */
         .lightbox-close-btn {
             position: fixed;
             right: 30px;
@@ -396,7 +557,7 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
 
-        /* ========== 自定義音頻播放器（liquid glass style） ========== */
+        /* ========== 自定義音頻播放器 ========== */
         .custom-audio-player {
             position: fixed;
             left: 20px;
@@ -425,6 +586,7 @@
             border-color: rgba(255,255,255,0.35);
             box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 12px 36px rgba(0,0,0,0.55);
         }
+        /* 音頻信息區域 */
         .audio-info {
             display: flex;
             align-items: center;
@@ -457,6 +619,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        /* 音頻控制按鈕行 */
         .audio-controls-row {
             display: flex;
             align-items: center;
@@ -487,6 +650,7 @@
             font-size: 18px;
             background: rgba(255,255,255,0.15);
         }
+        /* 進度條容器 */
         .audio-progress-container {
             flex: 1;
             height: 4px;
@@ -510,6 +674,7 @@
             min-width: 35px;
             text-align: right;
         }
+        /* 音量控制區域 */
         .audio-volume-container {
             display: flex;
             align-items: center;
@@ -553,6 +718,7 @@
             box-shadow: 0 0 4px rgba(0,0,0,0.3);
         }
 
+        /* ========== 音樂切換按鈕 ========== */
         .music-toggle-btn {
             position: fixed;
             left: 20px;
@@ -579,6 +745,7 @@
             transform: translateZ(0) translateY(-3px);
             box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
         }
+        /* 音樂可視化條 */
         .bar {
             width: 6px;
             background: #fff;
@@ -595,7 +762,7 @@
             100% { transform: scaleY(1); opacity: 1; }
         }
 
-        /* 圖片彈窗 */
+        /* ========== 圖片Lightbox ========== */
         .image-lightbox {
             position: fixed;
             inset: 0;
@@ -606,13 +773,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
             padding: 30px;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.45s ease, visibility 0.45s ease;
         }
         .image-lightbox.active { opacity: 1; visibility: visible; }
+
+        .lightbox-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            max-width: 95vw;
+            max-height: 95vh;
+            position: relative;
+        }
+
         .lightbox-wrap {
             padding: 16px;
             border-radius: 20px;
@@ -621,44 +798,71 @@
             -webkit-backdrop-filter: blur(22px) saturate(140%);
             border: 1px solid rgba(255,255,255,0.22);
             box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
-            max-width: 90vw;
-            max-height: 90vh;
             cursor: pointer;
             transition: transform 0.45s cubic-bezier(0.2,0,0.2,1), opacity 0.45s ease;
             transform: scale(0.92);
             opacity: 0;
+            max-width: 90vw;
+            max-height: 90vh;
+            flex-shrink: 0;
             position: relative;
         }
-        .image-lightbox.active .lightbox-wrap { transform: scale(1); opacity: 1; }
+        .image-lightbox.active .lightbox-wrap {
+            transform: scale(1);
+            opacity: 1;
+        }
         .lightbox-wrap.press { transform: scale(0.96); }
+
         .lightbox-img {
+            display: block;
             max-width: calc(90vw - 32px);
             max-height: calc(90vh - 32px);
-            display: block;
             border-radius: 12px;
             pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.15s ease;
+            object-fit: contain;
+            margin: 0 auto;
         }
-        .lightbox-special-info { display: none; align-items: center; justify-content: center; gap: 4px; align-self: center; }
-        .lightbox-rotated-date {
-            font-family: "LXGW WenKai TC", serif;
-            font-weight: bold;
-            font-size: 20px;
-            transform: rotate(90deg);
-            transform-origin: center center;
-            white-space: nowrap;
+
+        .lightbox-special-info {
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 0;
+            padding: 0;
+            margin: 0;
+            flex-shrink: 0;
+            padding-top: 8px;
+            margin-left: 8px;
         }
+        .lightbox-special-info.show {
+            display: flex;
+        }
+
         .lightbox-location-text {
             font-family: "LXGW WenKai TC", serif;
             font-weight: bold;
-            font-size: 36px;
-            writing-mode: vertical-lr;
+            font-size: 28px;
+            line-height: 1.1;
+            color: #ffffff;
+            writing-mode: vertical-rl;
             letter-spacing: 4px;
             white-space: nowrap;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+        }
+        .lightbox-rotated-date {
+            font-family: "LXGW WenKai TC", serif;
+            font-weight: bold;
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            writing-mode: vertical-rl;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            margin-top: 0;
         }
 
-        /* ========== 手機響應式 ========== */
+        /* ========== 響應式設計 - 手機端 ========== */
         @media (max-width: 768px), (hover: none) {
             * { cursor: auto !important; }
             .custom-cursor { display: none !important; }
@@ -687,6 +891,9 @@
             .about-username { font-size: 32px; }
             .gallery-grid { grid-template-columns: 1fr; margin-bottom: 32px; gap: 20px; }
             .gallery-item img { height: 260px; }
+            .gallery-caption {
+                text-align: center !important;
+            }
             .custom-audio-player {
                 width: calc(100% - 40px);
                 left: 20px;
@@ -696,17 +903,20 @@
             .music-toggle-btn { width: 56px; height: 56px; bottom: 50px; }
             .bar { width: 5px; }
             .scroll-top-btn { width: 56px; height: 56px; bottom: 50px; font-size: 24px; }
-            .lightbox-wrap { padding: 10px; }
-            .image-lightbox { flex-direction: column; gap: 12px; align-items: flex-start; }
-            .lightbox-special-info { gap: 10px; align-items: center; padding-left: 6px; flex-direction: row; flex-flow: row; }
-            .lightbox-rotated-date { font-size: 11px; transform: rotate(0deg); order: 2; }
-            .lightbox-location-text { font-size: 26px; writing-mode: horizontal-tb; letter-spacing: 2px; order: 1; }
+            .lightbox-wrap { padding: 10px; max-width: 90vw; max-height: 80vh; }
+            .lightbox-img { max-width: calc(90vw - 20px); max-height: calc(80vh - 20px); }
+            .lightbox-inner { flex-direction: column; align-items: center; gap: 12px; }
+            .lightbox-special-info { flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding-top: 0; margin-left: 0; }
+            .lightbox-location-text { font-size: 22px; writing-mode: horizontal-tb; letter-spacing: 2px; }
+            .lightbox-rotated-date { font-size: 12px; writing-mode: horizontal-tb; letter-spacing: 1px; margin-top: 0; }
             .lightbox-close-btn { display: flex; width: 56px; height: 56px; right: 30px; bottom: 50px; font-size: 24px; }
         }
+        /* 桌面端隱藏lightbox關閉按鈕（改為點擊背景關閉） */
         @media (min-width: 769px) {
             .lightbox-close-btn { display: none !important; }
         }
 
+        /* ========== 減少動畫偏好 ========== */
         @media (prefers-reduced-motion: reduce) {
             * { transition: none !important; animation: none !important; }
             html { scroll-behavior: auto !important; }
@@ -722,8 +932,10 @@
     </style>
 </head>
 <body class="lock-scroll">
+    <!-- 自定義鼠標元素 -->
     <div class="custom-cursor"></div>
 
+    <!-- 預加載遮罩層 -->
     <div id="preloaderMask">
         <div class="loadNum">0%</div>
         <div class="progressBox">
@@ -737,6 +949,7 @@
         </div>
     </div>
 
+    <!-- 導航欄 -->
     <nav>
         <div class="logo-wrap" data-page="home">
             <img class="logo-img" src="Main_page_pictures/Logo_1.webp" alt="頭像">
@@ -750,19 +963,23 @@
         </div>
     </nav>
 
+    <!-- 圖片Lightbox -->
     <div class="image-lightbox" id="lightbox">
-        <div class="lightbox-special-info" id="lightboxSpecialInfo">
-            <div class="lightbox-rotated-date">2026-01-01</div>
-            <div class="lightbox-location-text">清遠</div>
-        </div>
-        <div class="lightbox-wrap" id="lightboxWrap">
-            <img class="lightbox-img" id="lightboxImg" src="" alt="大圖檢視" style="display:none;">
+        <div class="lightbox-inner">
+            <div class="lightbox-wrap" id="lightboxWrap">
+                <img class="lightbox-img" id="lightboxImg" src="" alt="大圖檢視" style="display:none;">
+            </div>
+            <div class="lightbox-special-info" id="lightboxSpecialInfo">
+                <div class="lightbox-location-text">清遠</div>
+                <div class="lightbox-rotated-date">2026-01-01</div>
+            </div>
         </div>
     </div>
 
+    <!-- Lightbox關閉按鈕（手機端顯示） -->
     <button class="lightbox-close-btn" id="lightboxCloseBtn">✕</button>
 
-    <!-- ========== 自定義音頻播放器 ========== -->
+    <!-- 自定義音頻播放器 -->
     <div class="custom-audio-player hidden" id="customAudioPlayer">
         <div class="audio-info">
             <img class="audio-cover" id="audioCover" src="Music/Eason Chan/Cover of 沙龍 by Eason Chan.jpg" alt="封面">
@@ -787,13 +1004,13 @@
                 <div class="audio-volume-thumb" id="audioVolumeThumb"></div>
             </div>
         </div>
-        <!-- 隱藏的 audio 元素 -->
         <audio id="audioElement" preload="auto">
             <source src="Music/Eason Chan/ShaLong.mp3" type="audio/mpeg">
             您的瀏覽器不支援音頻播放。
         </audio>
     </div>
 
+    <!-- 音樂切換按鈕 -->
     <div class="music-toggle-btn hint-ring" id="toggleBtn">
         <div class="bar"></div>
         <div class="bar"></div>
@@ -801,7 +1018,9 @@
         <div class="bar"></div>
     </div>
 
+    <!-- 頁面容器 -->
     <div class="page-wrap">
+        <!-- ==================== 首頁 (Home) ==================== -->
         <div class="page active" id="home">
             <section class="banner" id="bannerWrap">
                 <h1 class="banner-3d-item">@charliewong_gallery</h1>
@@ -816,21 +1035,39 @@
                         <div class="gallery-item is-special" data-img="Main_page_pictures/homepage_gallery1.webp">
                             <img src="Main_page_pictures/homepage_gallery1.webp" alt="相片">
                         </div>
-                        <div class="first-img-caption scroll-fade">
+                        <div class="gallery-caption">
                             <div class="caption-location">清遠</div>
-                            <div class="caption-date">2026-01-01</div>
+                            <div class="caption-date">2023-04-08</div>
                         </div>
                     </div>
-                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery2.webp">
-                        <img src="Main_page_pictures/homepage_gallery2.webp" alt="相片">
+                    <div>
+                        <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery2.webp">
+                            <img src="Main_page_pictures/homepage_gallery2.webp" alt="相片">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="caption-location">清遠-龍頸</div>
+                            <div class="caption-date">2024-02-13</div>
+                        </div>
                     </div>
                 </div>
                 <div class="gallery-grid scroll-fade">
-                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery3.webp">
-                        <img src="Main_page_pictures/homepage_gallery3.webp" alt="相片">
+                    <div>
+                        <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery3.webp">
+                            <img src="Main_page_pictures/homepage_gallery3.webp" alt="相片">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="caption-location">香港</div>
+                            <div class="caption-date">2024-07-06</div>
+                        </div>
                     </div>
-                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery4.webp">
-                        <img src="Main_page_pictures/homepage_gallery4.webp" alt="相片">
+                    <div>
+                        <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery4.webp">
+                            <img src="Main_page_pictures/homepage_gallery4.webp" alt="相片">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="caption-location">海南</div>
+                            <div class="caption-date">2026-05-20</div>
+                        </div>
                     </div>
                 </div>
                 <div class="more-btn-wrap scroll-fade">
@@ -856,6 +1093,7 @@
             </footer>
         </div>
 
+        <!-- ==================== 關於我 (About me) ==================== -->
         <div class="page" id="aboutme">
             <div class="container">
                 <div class="about-header scroll-fade">
@@ -869,31 +1107,278 @@
             </footer>
         </div>
 
+        <!-- ==================== 完整相簿 (Full Gallery) ==================== -->
         <div class="page" id="gallery">
             <div class="container">
                 <h2 class="section-title scroll-fade">Full Gallery</h2>
-                <div class="gallery-grid scroll-fade">
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1011/800/800">
-                        <img src="https://picsum.photos/id/1011/800/800">
-                    </div>
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1021/800/800">
-                        <img src="https://picsum.photos/id/1021/800/800">
+                
+                <!-- ========== 地區篩選選擇框（Liquid Glass 按鈕式） ========== -->
+                <div class="filter-container scroll-fade">
+                    <button class="gallery-filter-btn" id="galleryFilterBtn">
+                        <span id="filterBtnText">清遠</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="gallery-filter-dropdown" id="galleryFilterDropdown">
+                        <div class="gallery-filter-option selected" data-value="qingyuan">
+                            <span class="check">✓</span>
+                            <span>清遠</span>
+                        </div>
+                        <div class="gallery-filter-option" data-value="hainan">
+                            <span class="check">✓</span>
+                            <span>海南</span>
+                        </div>
+                        <div class="gallery-filter-option" data-value="hongkong">
+                            <span class="check">✓</span>
+                            <span>香港</span>
+                        </div>
+                        <div class="gallery-filter-option" data-value="shenzhen">
+                            <span class="check">✓</span>
+                            <span>深圳</span>
+                        </div>
+                        <div class="gallery-filter-option" data-value="tokyo">
+                            <span class="check">✓</span>
+                            <span>東京</span>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-grid scroll-fade">
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1031/800/800">
-                        <img src="https://picsum.photos/id/1031/800/800">
+
+                <!-- ========== 清遠圖片集（默認顯示） ========== -->
+                <div class="region-gallery active" id="qingyuan">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片1">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2023-04-08</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片2">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2023-04-15</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1041/800/800">
-                        <img src="https://picsum.photos/id/1041/800/800">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片3">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2024-02-13</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片4">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2025-01-01</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片5">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2025-08-20</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="清遠照片6">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">清遠</div>
+                                <div class="caption-date">2026-03-10</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-grid scroll-fade">
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1051/800/800">
-                        <img src="https://picsum.photos/id/1051/800/800">
+
+                <!-- ========== 海南圖片集 ========== -->
+                <div class="region-gallery" id="hainan">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="海南照片1">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">海南</div>
+                                <div class="caption-date">2024-05-20</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="海南照片2">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">海南</div>
+                                <div class="caption-date">2024-05-21</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="gallery-item" data-img="https://picsum.photos/id/1061/800/800">
-                        <img src="https://picsum.photos/id/1061/800/800">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="海南照片3">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">海南</div>
+                                <div class="caption-date">2024-05-22</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="海南照片4">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">海南</div>
+                                <div class="caption-date">2026-05-20</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 香港圖片集 ========== -->
+                <div class="region-gallery" id="hongkong">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="香港照片1">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">香港</div>
+                                <div class="caption-date">2024-07-06</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="香港照片2">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">香港</div>
+                                <div class="caption-date">2024-07-07</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="香港照片3">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">香港</div>
+                                <div class="caption-date">2024-07-08</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="香港照片4">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">香港</div>
+                                <div class="caption-date">2025-12-25</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 深圳圖片集 ========== -->
+                <div class="region-gallery" id="shenzhen">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="深圳照片1">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">深圳</div>
+                                <div class="caption-date">2025-03-15</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="深圳照片2">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">深圳</div>
+                                <div class="caption-date">2025-03-16</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="深圳照片3">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">深圳</div>
+                                <div class="caption-date">2025-09-01</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="深圳照片4">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">深圳</div>
+                                <div class="caption-date">2026-06-18</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 東京圖片集 ========== -->
+                <div class="region-gallery" id="tokyo">
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="東京照片1">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">東京</div>
+                                <div class="caption-date">2025-04-10</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="東京照片2">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">東京</div>
+                                <div class="caption-date">2025-04-11</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-grid scroll-fade">
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="東京照片3">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">東京</div>
+                                <div class="caption-date">2025-04-12</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                <img src="Main_page_pictures/homepage_gallery1.webp" alt="東京照片4">
+                            </div>
+                            <div class="gallery-caption">
+                                <div class="caption-location">東京</div>
+                                <div class="caption-date">2025-04-13</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -903,20 +1388,24 @@
         </div>
     </div>
 
+    <!-- 回到頂部按鈕 -->
     <button class="scroll-top-btn" id="scrollTopBtn">↑</button>
 
     <script>
-        // ========== 每次刷新強制回到頂部 ==========
+        // ========== 頁面初始化設置 ==========
+        // 禁用瀏覽器默認的滾動恢復，手動控制滾動位置
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0,0);
         document.documentElement.scrollTop = 0;
 
+        // DOM載入完成後確保滾動到頂部
         document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo(0,0);
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
         });
 
+        // 頁面完全載入後再次確保滾動到頂部
         window.addEventListener('load', () => {
             setTimeout(() => {
                 window.scrollTo({top:0,left:0,behavior:'instant'});
@@ -929,6 +1418,7 @@
             });
         });
 
+        // 頁面從緩存恢復時確保滾動到頂部
         window.addEventListener('pageshow', (event) => {
             if(event.persisted) {
                 window.scrollTo(0,0);
@@ -936,10 +1426,11 @@
             }
         });
 
-        // ========== 初始頁面鎖定滾動控制 ==========
+        // ========== 頁面滾動鎖定功能 ==========
         const bodyEl = document.body;
-        let pageScrollLocked = true;
+        let pageScrollLocked = true; // 頁面載入時默認鎖定滾動
 
+        // 鎖定頁面滾動
         function lockPageScroll() {
             pageScrollLocked = true;
             const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -949,6 +1440,7 @@
             document.addEventListener('touchmove', preventScroll, {passive:false});
         }
 
+        // 解鎖頁面滾動
         function unlockPageScroll() {
             pageScrollLocked = false;
             bodyEl.classList.remove('lock-scroll');
@@ -957,6 +1449,7 @@
             document.removeEventListener('touchmove', preventScroll);
         }
 
+        // 阻止觸摸滾動事件
         function preventScroll(e) {
             if(pageScrollLocked) e.preventDefault();
         }
@@ -965,13 +1458,14 @@
         window.scrollTo(0,0);
         document.documentElement.scrollTop = 0;
 
-        // ========== Banner 3D跟隨滑鼠傾斜 ==========
+        // ========== 橫幅3D視差效果 ==========
         const bannerWrap = document.getElementById('bannerWrap');
         const banner3dItems = document.querySelectorAll('.banner-3d-item');
-        const maxRotate = 18;
-        const shadowMulti = 0.7;
+        const maxRotate = 18; // 最大旋轉角度
+        const shadowMulti = 0.7; // 陰影強度倍數
         let bannerRect = null;
 
+        // 鼠標在橫幅上移動時計算3D旋轉和陰影
         bannerWrap.addEventListener('mousemove', (e) => {
             bannerRect = bannerWrap.getBoundingClientRect();
             const offsetX = ((e.clientX - bannerRect.left) / bannerRect.width - 0.5) * 2;
@@ -985,6 +1479,7 @@
                 el.style.textShadow = `${shadowX}px ${shadowY}px 14px rgba(0,0,0,0.85)`;
             });
         });
+        // 鼠標離開橫幅時重置3D效果
         bannerWrap.addEventListener('mouseleave', () => {
             banner3dItems.forEach(el => {
                 el.style.transform = `rotateX(0deg) rotateY(0deg)`;
@@ -992,13 +1487,15 @@
             });
         });
 
-        // ========== 自訂滑鼠游標 ==========
+        // ========== 自定義鼠標動畫 ==========
         const cursor = document.querySelector('.custom-cursor');
         let mouseX=0, mouseY=0, cursorX=0, cursorY=0, hoverTimer=null;
-        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .audio-progress-container, .audio-volume-track');
+        // 定義需要鼠標懸停效果的元素列表
+        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .audio-progress-container, .audio-volume-track, .filter-select');
         const hoverList = Array.from(hoverElements);
 
         document.addEventListener('mousemove', (e) => { mouseX=e.clientX; mouseY=e.clientY; });
+        // 鼠標跟隨動畫（帶延遲平滑效果）
         function animateCursor() {
             cursorX += (mouseX - cursorX) * 0.18;
             cursorY += (mouseY - cursorY) * 0.18;
@@ -1008,11 +1505,13 @@
         }
         animateCursor();
 
+        // 鼠標按下效果
         document.addEventListener('mousedown', () => {
             clearTimeout(hoverTimer);
             cursor.classList.remove('hover');
             cursor.classList.add('down');
         });
+        // 鼠標釋放效果
         document.addEventListener('mouseup', () => {
             cursor.classList.remove('down');
             clearTimeout(hoverTimer);
@@ -1022,10 +1521,12 @@
                 if(isHoverTarget) cursor.classList.add('hover');
             }, 160);
         });
+        // 鼠標離開頁面時重置
         document.addEventListener('mouseleave', () => {
             clearTimeout(hoverTimer);
             cursor.classList.remove('down','hover');
         });
+        // 為可懸停元素添加鼠標進入/離開效果
         hoverList.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 clearTimeout(hoverTimer);
@@ -1037,7 +1538,7 @@
             });
         });
 
-        // ========== 滾動漸顯 ==========
+        // ========== 滾動漸顯動畫觀察器 ==========
         const fadeItems = document.querySelectorAll('.scroll-fade');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1047,7 +1548,7 @@
         }, {rootMargin:"0px 0px -100px 0px"});
         fadeItems.forEach(item => observer.observe(item));
 
-        // ========== 載入遮罩 ==========
+        // ========== 預加載進度條邏輯 ==========
         const mask = document.getElementById('preloaderMask');
         const numText = document.querySelector('.loadNum');
         const fillBar = document.getElementById('barFill');
@@ -1055,11 +1556,12 @@
         const cnBtn = document.getElementById('enterCn');
         const enBtn = document.getElementById('enterEn');
 
-        const totalTime = 4000;
-        const stepMs = 50;
+        const totalTime = 4000; // 總加載時間4秒
+        const stepMs = 50; // 每50毫秒更新一次
         let currentPercent = 0;
         const increment = 100 / (totalTime / stepMs);
 
+        // 進度條更新函數
         function runProgress() {
             currentPercent += increment;
             if(currentPercent >= 100) { currentPercent = 100; clearInterval(progressTimer); }
@@ -1068,19 +1570,21 @@
         }
         const progressTimer = setInterval(runProgress, stepMs);
 
+        // 進度完成後顯示進入按鈕
         setTimeout(() => { btnBox.classList.add('showBtn'); }, totalTime);
 
+        // 關閉預加載遮罩
         function closeMask() {
             if(currentPercent === 100) {
                 mask.classList.add('hideMask');
                 unlockPageScroll();
-                startPreloading();
+                startPreloading(); // 開始預加載圖片
             }
         }
         cnBtn.addEventListener('click', closeMask);
         enBtn.addEventListener('click', closeMask);
 
-        // ========== 頁面導航 ==========
+        // ========== 頁面導航切換 ==========
         const navLinks = document.querySelectorAll('[data-page]');
         const pages = document.querySelectorAll('.page');
         navLinks.forEach(link => {
@@ -1093,9 +1597,10 @@
             });
         });
 
-        // ========== 智能圖片預加載系統 ==========
-        const preloadCache = new Map();
+        // ========== 圖片預加載系統 ==========
+        const preloadCache = new Map(); // 使用Map緩存已加載的圖片
 
+        // 收集所有需要預加載的圖片URL
         function collectPreloadUrls() {
             const galleryItems = document.querySelectorAll('.gallery-item[data-img]');
             const urls = [];
@@ -1106,6 +1611,7 @@
             return urls;
         }
 
+        // 預加載單張圖片
         function preloadImage(url) {
             return new Promise((resolve) => {
                 if(preloadCache.has(url)) { resolve(preloadCache.get(url)); return; }
@@ -1116,9 +1622,10 @@
             });
         }
 
+        // 批量預加載圖片
         async function batchPreload(urls) {
-            const batchSize = 2;
-            const delayBetweenBatches = 200;
+            const batchSize = 2; // 每批2張
+            const delayBetweenBatches = 200; // 批次間延遲200毫秒
             for(let i=0; i<urls.length; i+=batchSize) {
                 const batch = urls.slice(i, i+batchSize);
                 await Promise.all(batch.map(url => preloadImage(url)));
@@ -1126,6 +1633,7 @@
             }
         }
 
+        // 在瀏覽器空閒時預加載圖片
         function preloadWhenIdle(urls) {
             if(urls.length===0) return;
             let index = 0;
@@ -1145,6 +1653,7 @@
             requestIdleCallback(processNext, {timeout:500});
         }
 
+        // 開始預加載
         function startPreloading() {
             const urls = collectPreloadUrls();
             if(urls.length===0) return;
@@ -1155,6 +1664,7 @@
         if(document.readyState==='complete') startPreloading();
         else window.addEventListener('load', () => { setTimeout(startPreloading, 500); });
 
+        // 使用IntersectionObserver在圖片進入視口時預加載
         const preloadObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -1164,22 +1674,29 @@
                     preloadObserver.unobserve(item);
                 }
             });
-        }, {rootMargin:"200px"});
+        }, {rootMargin:"200px"}); // 提前200px開始加載
 
         document.querySelectorAll('.gallery-item[data-img]').forEach(item => { preloadObserver.observe(item); });
 
-        // ========== 圖片彈窗邏輯 ==========
+        // ========== Lightbox功能 ==========
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxWrap = document.getElementById('lightboxWrap');
         const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
         const lightboxSpecialInfo = document.getElementById('lightboxSpecialInfo');
-        const galleryItems = document.querySelectorAll('.gallery-item[data-img]');
+        
+        // 更新畫廊項目列表
+        function updateGalleryItems() {
+            return document.querySelectorAll('.gallery-item[data-img]');
+        }
 
+        let galleryItems = updateGalleryItems();
         let _scrollY = 0;
         let currentLightboxSrc = '';
 
+        // 觸摸移動事件處理
         function onTouchMove(e) { e.preventDefault(); }
+        // 鎖定Lightbox滾動
         function lockScrollLB() {
             _scrollY = window.scrollY;
             const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -1188,6 +1705,7 @@
             document.documentElement.style.overflow = 'hidden';
             document.addEventListener('touchmove', onTouchMove, {passive:false});
         }
+        // 解鎖Lightbox滾動
         function unlockScrollLB() {
             bodyEl.classList.remove('lock-scroll');
             document.documentElement.style.overflow = '';
@@ -1196,15 +1714,18 @@
             window.scrollTo({top:_scrollY,left:0,behavior:'instant'});
         }
 
+        // 關閉Lightbox
         function closeLightbox() {
             lightbox.classList.remove('active');
             lightboxCloseBtn.classList.remove('show');
             lightboxImg.src = '';
             lightboxImg.style.display = 'none';
             currentLightboxSrc = '';
+            lightboxSpecialInfo.classList.remove('show');
             unlockScrollLB();
         }
 
+        // 在Lightbox中顯示圖片
         function showImageInLightbox(src) {
             if(currentLightboxSrc === src && lightboxImg.style.display !== 'none') {
                 lightbox.classList.add('active');
@@ -1216,6 +1737,12 @@
             lightboxImg.src = '';
             lightbox.classList.add('active');
             if(window.innerWidth <= 768) lightboxCloseBtn.classList.add('show');
+
+            if(lightboxWrap.dataset.showInfo === 'true') {
+                lightboxSpecialInfo.classList.add('show');
+            } else {
+                lightboxSpecialInfo.classList.remove('show');
+            }
 
             if(preloadCache.has(src) && preloadCache.get(src)) {
                 lightboxImg.src = src;
@@ -1239,27 +1766,113 @@
             }
         }
 
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const src = item.dataset.img;
-                if(item.classList.contains('is-special')) lightboxSpecialInfo.style.display = 'flex';
-                else lightboxSpecialInfo.style.display = 'none';
-                lockScrollLB();
-                showImageInLightbox(src);
+        // 綁定畫廊點擊事件
+        function bindGalleryEvents() {
+            galleryItems.forEach(item => {
+                item.removeEventListener('click', handleGalleryClick);
+                item.addEventListener('click', handleGalleryClick);
             });
-        });
+        }
 
+        // 畫廊點擊處理
+        function handleGalleryClick(e) {
+            const item = e.currentTarget;
+            const src = item.dataset.img;
+            const isSpecial = item.classList.contains('is-special');
+            lightboxWrap.dataset.showInfo = isSpecial ? 'true' : 'false';
+            lockScrollLB();
+            showImageInLightbox(src);
+        }
+
+        bindGalleryEvents();
+
+        // 點擊Lightbox背景關閉
         lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+        // Lightbox關閉按鈕
         lightboxCloseBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             lightboxCloseBtn.classList.add('click-bounce');
             setTimeout(() => lightboxCloseBtn.classList.remove('click-bounce'), 300);
             closeLightbox();
         });
+        // Lightbox圖片點擊效果
         lightboxWrap.addEventListener('click', (e) => {
             e.stopPropagation();
             lightboxWrap.classList.add('press');
             setTimeout(() => lightboxWrap.classList.remove('press'), 150);
+        });
+
+        // ========== 地區篩選功能（Liquid Glass 按鈕式下拉選單） ==========
+        const regionGalleries = document.querySelectorAll('.region-gallery');
+        const galleryFilterBtn = document.getElementById('galleryFilterBtn');
+        const galleryFilterDropdown = document.getElementById('galleryFilterDropdown');
+        const galleryFilterOptions = document.querySelectorAll('.gallery-filter-option');
+        const filterBtnText = document.getElementById('filterBtnText');
+
+        // 切換地區顯示
+        function switchRegion(regionId) {
+            regionGalleries.forEach(gallery => {
+                gallery.classList.remove('active');
+            });
+            
+            const targetGallery = document.getElementById(regionId);
+            if(targetGallery) {
+                targetGallery.classList.add('active');
+            }
+            
+            galleryItems = updateGalleryItems();
+            bindGalleryEvents();
+            
+            galleryItems.forEach(item => {
+                preloadObserver.observe(item);
+            });
+            
+            setTimeout(() => {
+                const newFadeItems = document.querySelectorAll(`#${regionId} .scroll-fade`);
+                newFadeItems.forEach(item => {
+                    observer.observe(item);
+                    if(item.getBoundingClientRect().top < window.innerHeight) {
+                        item.classList.add('scroll-show');
+                    }
+                });
+            }, 100);
+            
+            startPreloading();
+        }
+
+        // 切換下拉選單
+        galleryFilterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            galleryFilterBtn.classList.toggle('active');
+            galleryFilterDropdown.classList.toggle('show');
+        });
+
+        // 選擇地區
+        galleryFilterOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = option.getAttribute('data-value');
+                
+                // 更新選中狀態
+                galleryFilterOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                // 更新按鈕文字
+                filterBtnText.textContent = option.querySelector('span:last-child').textContent;
+                
+                // 關閉下拉選單
+                galleryFilterBtn.classList.remove('active');
+                galleryFilterDropdown.classList.remove('show');
+                
+                // 切換地區
+                switchRegion(value);
+            });
+        });
+
+        // 點擊外部關閉下拉選單
+        document.addEventListener('click', () => {
+            galleryFilterBtn.classList.remove('active');
+            galleryFilterDropdown.classList.remove('show');
         });
 
         // ========== 回到頂部按鈕 ==========
@@ -1271,7 +1884,7 @@
             window.scrollTo({top:0,left:0,behavior:'smooth'});
         });
 
-        // ========== 自定義音頻播放器控制 ==========
+        // ========== 音頻播放器功能 ==========
         const customAudioPlayer = document.getElementById('customAudioPlayer');
         const audioElement = document.getElementById('audioElement');
         const audioPlayBtn = document.getElementById('audioPlayBtn');
@@ -1286,7 +1899,6 @@
         const audioTitle = document.getElementById('audioTitle');
         const audioArtist = document.getElementById('audioArtist');
 
-        // 自定義音量控制元素
         const audioVolumeTrack = document.getElementById('audioVolumeTrack');
         const audioVolumeFill = document.getElementById('audioVolumeFill');
         const audioVolumeThumb = document.getElementById('audioVolumeThumb');
@@ -1294,12 +1906,19 @@
         let playerOpen = false;
         let isPlaying = false;
 
+        // 音樂播放列表
         const musicFiles = [
             {
                 title: '沙龍',
                 artist: 'Eason Chan 陳奕迅',
                 cover: 'Music/Eason Chan/Cover of 沙龍 by Eason Chan.jpg',
                 src: 'Music/Eason Chan/ShaLong.mp3'
+            },
+            {
+                title: 'Da Capo',
+                artist: '車子玉',
+                cover: 'Music/崩壞三/Cover of Da Capo by HOYO-MiX.jpg',
+                src: 'Music/崩壞三/Da Capo - 车子玉.mp3'
             },
             {
                 title: 'Fable',
@@ -1336,10 +1955,17 @@
                 artist: 'kensuke ushio',
                 cover: 'Music/電鋸人/Cover of in the sea by kensuke ushio.jpg',
                 src: 'Music/電鋸人/Slow summer eve - kensuke ushio.mp3'
-            }
+            },
+            {
+                title: '焚蝶',
+                artist: '明日方舟：終末地',
+                cover: 'Music/終末地/春曉時.avif',
+                src: 'Music/終末地/庄方宜主题曲「焚蝶」.mp3'
+            },
         ];
         let currentTrackIndex = 0;
 
+        // 載入指定索引的音樂
         function loadTrack(index) {
             if(index >= 0 && index < musicFiles.length) {
                 currentTrackIndex = index;
@@ -1361,6 +1987,7 @@
             }
         }
 
+        // 格式化時間顯示
         function formatTime(seconds) {
             if(isNaN(seconds)) return '0:00';
             const mins = Math.floor(seconds / 60);
@@ -1368,6 +1995,7 @@
             return mins + ':' + (secs < 10 ? '0' : '') + secs;
         }
 
+        // 音頻事件監聽
         audioElement.addEventListener('loadedmetadata', () => {
             audioTime.textContent = formatTime(audioElement.duration);
         });
@@ -1403,6 +2031,7 @@
             toggleBtn.classList.add('paused');
         });
 
+        // 播放/暫停按鈕
         audioPlayBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if(isPlaying) {
@@ -1412,6 +2041,7 @@
             }
         });
 
+        // 進度條點擊跳轉
         audioProgressContainer.addEventListener('click', (e) => {
             e.stopPropagation();
             const rect = audioProgressContainer.getBoundingClientRect();
@@ -1421,7 +2051,7 @@
             if(!isNaN(seekTime)) audioElement.currentTime = seekTime;
         });
 
-        // ========== 自定義音量控制 ==========
+        // ========== 音量控制 ==========
         let isDraggingVolume = false;
 
         function updateVolumeUI(value) {
@@ -1485,16 +2115,18 @@
             }
         });
 
-        // 初始音量 20%
         audioElement.volume = 0.2;
         updateVolumeUI(0.2);
 
+        // 上一首/下一首按鈕
         audioPrevBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if(currentTrackIndex > 0) {
                 loadTrack(currentTrackIndex - 1);
-                if(isPlaying) audioElement.play().catch(()=>{});
+            } else {
+                loadTrack(musicFiles.length - 1);
             }
+            if(isPlaying) audioElement.play().catch(()=>{});
         });
 
         audioNextBtn.addEventListener('click', (e) => {
@@ -1508,7 +2140,7 @@
             }
         });
 
-        // 音樂切換按鈕：只展開/收起播放器，不影響音樂播放狀態
+        // 音樂切換按鈕
         toggleBtn.addEventListener('click', () => {
             toggleBtn.classList.remove('hint-ring');
             toggleBtn.classList.add('click-bounce');
