@@ -452,7 +452,7 @@
             padding: 12px 16px;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             font-family: "LXGW WenKai TC", serif;
             font-size: 19px;
             font-weight: 300;
@@ -461,9 +461,11 @@
             align-items: center;
             gap: 10px;
             letter-spacing: 0.5px;
+            transform: scale(1);
         }
         .gallery-filter-option:hover {
             background: rgba(255,255,255,0.12);
+            transform: scale(1.05);
         }
         .gallery-filter-option.selected {
             background: rgba(255,255,255,0.18);
@@ -485,6 +487,137 @@
         }
         .region-gallery.active {
             display: block;
+        }
+
+        /* ========== 時間軸樣式 ========== */
+        #gallery {
+            position: relative;
+        }
+        #testing {
+            position: relative;
+            min-height: 100vh;
+        }
+        #testing::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(30px) brightness(0.7);
+            transform: scale(1.1);
+            z-index: 100;
+            transition: background-image 0.8s ease, opacity 0.6s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #testing.has-background::before {
+            opacity: 1;
+        }
+        #testing::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 101;
+            pointer-events: none;
+        }
+        #gallery.active .section-title,
+        #gallery.active .filter-container {
+            position: relative;
+            z-index: 105;
+        }
+        #testing .timeline-container {
+            position: relative;
+            z-index: 103;
+        }
+        .timeline-container {
+            position: relative;
+            padding: 40px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.2), 0 0 20px rgba(255,255,255,0.4);
+            z-index: 2;
+        }
+        .timeline-content {
+            width: 45%;
+            position: relative;
+        }
+        .timeline-content.left {
+            margin-right: auto;
+            padding-right: 40px;
+            text-align: right;
+        }
+        .timeline-content.right {
+            margin-left: auto;
+            padding-left: 40px;
+            text-align: left;
+        }
+        .timeline-date {
+            font-family: "LXGW WenKai TC", serif;
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .timeline-image-wrapper {
+            margin-bottom: 12px;
+        }
+        .timeline-image-wrapper .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .timeline-image-wrapper .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+        .timeline-image-wrapper .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .timeline-description {
+            font-family: "LXGW WenKai TC", serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 0.5px;
         }
 
         /* ========== 頁尾 ========== */
@@ -910,6 +1043,11 @@
             .lightbox-location-text { font-size: 22px; writing-mode: horizontal-tb; letter-spacing: 2px; }
             .lightbox-rotated-date { font-size: 12px; writing-mode: horizontal-tb; letter-spacing: 1px; margin-top: 0; }
             .lightbox-close-btn { display: flex; width: 56px; height: 56px; right: 30px; bottom: 50px; font-size: 24px; }
+            /* 時間軸響應式 */
+            .timeline-line { left: 30px; }
+            .timeline-dot { left: 30px; }
+            .timeline-content { width: 100%; padding-left: 60px !important; padding-right: 0 !important; text-align: left !important; }
+            .timeline-content.left, .timeline-content.right { margin-left: 0; margin-right: 0; }
         }
         /* 桌面端隱藏lightbox關閉按鈕（改為點擊背景關閉） */
         @media (min-width: 769px) {
@@ -1138,6 +1276,10 @@
                         <div class="gallery-filter-option" data-value="tokyo">
                             <span class="check">✓</span>
                             <span>東京</span>
+                        </div>
+                        <div class="gallery-filter-option" data-value="testing">
+                            <span class="check">✓</span>
+                            <span>Testing</span>
                         </div>
                     </div>
                 </div>
@@ -1381,6 +1523,69 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ========== Testing 時間軸圖片集 ========== -->
+                <div class="region-gallery" id="testing">
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+                        
+                        <!-- 時間軸項目 1 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-01-15</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
+                                        <img src="Main_page_pictures/homepage_gallery1.webp" alt="Testing照片1">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">第一個測試項目</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 2 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-03-20</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery2.webp">
+                                        <img src="Main_page_pictures/homepage_gallery2.webp" alt="Testing照片2">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">第二個測試項目</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 3 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-06-10</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery3.webp">
+                                        <img src="Main_page_pictures/homepage_gallery3.webp" alt="Testing照片3">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">第三個測試項目</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 4 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-09-05</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery4.webp">
+                                        <img src="Main_page_pictures/homepage_gallery4.webp" alt="Testing照片4">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">第四個測試項目</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <footer class="scroll-fade">
                 <p>© 2026 我的網站 | 所有版權保留</p>
@@ -1491,7 +1696,7 @@
         const cursor = document.querySelector('.custom-cursor');
         let mouseX=0, mouseY=0, cursorX=0, cursorY=0, hoverTimer=null;
         // 定義需要鼠標懸停效果的元素列表
-        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .audio-progress-container, .audio-volume-track, .filter-select');
+        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .audio-progress-container, .audio-volume-track, .filter-select, .gallery-filter-btn, .gallery-filter-option');
         const hoverList = Array.from(hoverElements);
 
         document.addEventListener('mousemove', (e) => { mouseX=e.clientX; mouseY=e.clientY; });
@@ -1564,14 +1769,16 @@
         // 進度條更新函數
         function runProgress() {
             currentPercent += increment;
-            if(currentPercent >= 100) { currentPercent = 100; clearInterval(progressTimer); }
+            if(currentPercent >= 100) { 
+                currentPercent = 100; 
+                clearInterval(progressTimer);
+                // 只有達到100%時才顯示進入按鈕
+                btnBox.classList.add('showBtn');
+            }
             numText.textContent = Math.floor(currentPercent) + "%";
             fillBar.style.width = currentPercent + "%";
         }
         const progressTimer = setInterval(runProgress, stepMs);
-
-        // 進度完成後顯示進入按鈕
-        setTimeout(() => { btnBox.classList.add('showBtn'); }, totalTime);
 
         // 關閉預加載遮罩
         function closeMask() {
@@ -1809,6 +2016,49 @@
         const galleryFilterOptions = document.querySelectorAll('.gallery-filter-option');
         const filterBtnText = document.getElementById('filterBtnText');
 
+        // 設置時間軸背景圖片
+        function setupTimelineBackground() {
+            const testingGallery = document.getElementById('testing');
+            if(!testingGallery) return;
+
+            const timelineImages = testingGallery.querySelectorAll('.timeline-image-wrapper img');
+            if(timelineImages.length === 0) return;
+
+            // 使用第一張圖片作為初始背景
+            const firstImage = timelineImages[0].src;
+            testingGallery.style.setProperty('--bg-image', `url(${firstImage})`);
+            
+            // 創建 IntersectionObserver 來監聽可見的圖片
+            const bgObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                        const img = entry.target.querySelector('img');
+                        if(img) {
+                            testingGallery.style.setProperty('--bg-image', `url(${img.src})`);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '-20% 0px -20% 0px'
+            });
+
+            // 監聽所有時間軸項目
+            const timelineItems = testingGallery.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                bgObserver.observe(item);
+            });
+        }
+
+        // 更新 ::before 偽元素的背景圖片
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            #testing::before {
+                background-image: var(--bg-image, none);
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
         // 切換地區顯示
         function switchRegion(regionId) {
             regionGalleries.forEach(gallery => {
@@ -1818,6 +2068,21 @@
             const targetGallery = document.getElementById(regionId);
             if(targetGallery) {
                 targetGallery.classList.add('active');
+            }
+            
+            // 處理 testing 地區的背景漸顯/漸隱
+            const testingGallery = document.getElementById('testing');
+            if(regionId === 'testing') {
+                // 漸顯背景
+                setTimeout(() => {
+                    setupTimelineBackground();
+                    testingGallery.classList.add('has-background');
+                }, 100);
+            } else {
+                // 漸隱背景
+                if(testingGallery) {
+                    testingGallery.classList.remove('has-background');
+                }
             }
             
             galleryItems = updateGalleryItems();
