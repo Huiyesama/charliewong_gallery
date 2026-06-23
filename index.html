@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- 導入字體:Homemade Apple(英文手寫體)、LXGW WenKai TC(中文楷體,含light 300字重) -->
     <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=LXGW+WenKai+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 導入 Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /* ========== 全局基礎樣式重置 ========== */
         * {
@@ -45,6 +47,24 @@
         .scroll-fade.scroll-show {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* ========== Material Design Icons ========== */
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ========== 自定義鼠標樣式 ========== */
@@ -496,46 +516,7 @@
         #testing {
             position: relative;
             min-height: 100vh;
-        }
-        #testing::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: blur(30px) brightness(0.7);
-            transform: scale(1.1);
-            z-index: 100;
-            transition: background-image 0.8s ease, opacity 0.6s ease;
-            opacity: 0;
-            pointer-events: none;
-        }
-        #testing.has-background::before {
-            opacity: 1;
-        }
-        #testing::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 101;
-            pointer-events: none;
-        }
-        #gallery.active .section-title,
-        #gallery.active .filter-container {
-            position: relative;
-            z-index: 105;
-        }
-        #testing .timeline-container {
-            position: relative;
-            z-index: 103;
+            background: #000000;
         }
         .timeline-container {
             position: relative;
@@ -551,6 +532,8 @@
             width: 3px;
             background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4), transparent);
             transform: translateX(-50%);
+            z-index: 1;
+            pointer-events: none;
         }
         .timeline-item {
             position: relative;
@@ -560,6 +543,29 @@
         }
         .timeline-item:last-child {
             margin-bottom: 0;
+        }
+        /* 每個時間軸項目的毛玻璃背景 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            bottom: 30px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(30px) brightness(0.5) saturate(1.2);
+            transform: scale(1.1);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            border-radius: 12px;
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.7) 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.7) 20%, transparent 80%);
+        }
+        .timeline-item.has-bg::before {
+            opacity: 1;
         }
         .timeline-dot {
             position: absolute;
@@ -744,6 +750,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-family: "LXGW WenKai TC", serif;
+            transition: opacity 0.3s ease;
+        }
+        .audio-title.fade-out {
+            opacity: 0;
+        }
+        .audio-title.fade-in {
+            opacity: 0;
         }
         .audio-artist {
             color: rgba(255,255,255,0.6);
@@ -751,6 +764,27 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: opacity 0.3s ease;
+        }
+        .audio-artist.fade-out {
+            opacity: 0;
+        }
+        .audio-artist.fade-in {
+            opacity: 0;
+        }
+        .audio-cover {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: opacity 0.3s ease;
+        }
+        .audio-cover.fade-out {
+            opacity: 0;
+        }
+        .audio-cover.fade-in {
+            opacity: 0;
         }
         /* 音頻控制按鈕行 */
         .audio-controls-row {
@@ -806,6 +840,13 @@
             flex-shrink: 0;
             min-width: 35px;
             text-align: right;
+            transition: opacity 0.3s ease;
+        }
+        .audio-time.fade-out {
+            opacity: 0;
+        }
+        .audio-time.fade-in {
+            opacity: 0;
         }
         /* 音量控制區域 */
         .audio-volume-container {
@@ -815,9 +856,20 @@
         }
         .audio-volume-icon {
             color: rgba(255,255,255,0.6);
-            font-size: 14px;
             cursor: pointer;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        .audio-volume-icon:hover {
+            color: rgba(255,255,255,0.9);
+        }
+        .audio-volume-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
         .audio-volume-track {
             width: 60px;
@@ -1127,16 +1179,32 @@
             </div>
         </div>
         <div class="audio-controls-row">
-            <button class="audio-btn" id="audioPrevBtn" title="上一首">⏮</button>
-            <button class="audio-btn play-btn" id="audioPlayBtn" title="播放/暫停">▶</button>
-            <button class="audio-btn" id="audioNextBtn" title="下一首">⏭</button>
+            <button class="audio-btn" id="audioPrevBtn" title="上一首">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </button>
+            <button class="audio-btn play-btn" id="audioPlayBtn" title="播放/暫停">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <button class="audio-btn" id="audioNextBtn" title="下一首">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </button>
             <div class="audio-progress-container" id="audioProgressContainer">
                 <div class="audio-progress-bar" id="audioProgressBar"></div>
             </div>
             <span class="audio-time" id="audioTime">0:00</span>
         </div>
         <div class="audio-volume-container">
-            <span class="audio-volume-icon" id="audioVolumeIcon">🔉</span>
+            <span class="audio-volume-icon" id="audioVolumeIcon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+                </svg>
+            </span>
             <div class="audio-volume-track" id="audioVolumeTrack">
                 <div class="audio-volume-fill" id="audioVolumeFill"></div>
                 <div class="audio-volume-thumb" id="audioVolumeThumb"></div>
@@ -1532,13 +1600,13 @@
                         <!-- 時間軸項目 1 (左側) -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">2023-01-15</div>
+                                <div class="timeline-date">2023-04-08</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery1.webp">
-                                        <img src="Main_page_pictures/homepage_gallery1.webp" alt="Testing照片1">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠1.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠1.webp" alt="Testing照片1">
                                     </div>
                                 </div>
-                                <div class="timeline-description">第一個測試項目</div>
+                                <div class="timeline-description">清遠 · 壹</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
@@ -1546,13 +1614,13 @@
                         <!-- 時間軸項目 2 (右側) -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content right">
-                                <div class="timeline-date">2023-03-20</div>
+                                <div class="timeline-date">2023-04-09</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery2.webp">
-                                        <img src="Main_page_pictures/homepage_gallery2.webp" alt="Testing照片2">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠2.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠2.webp" alt="Testing照片2">
                                     </div>
                                 </div>
-                                <div class="timeline-description">第二個測試項目</div>
+                                <div class="timeline-description">清遠 · 貳</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
@@ -1560,13 +1628,13 @@
                         <!-- 時間軸項目 3 (左側) -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">2023-06-10</div>
+                                <div class="timeline-date">2023-04-10</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery3.webp">
-                                        <img src="Main_page_pictures/homepage_gallery3.webp" alt="Testing照片3">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠3.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠3.webp" alt="Testing照片3">
                                     </div>
                                 </div>
-                                <div class="timeline-description">第三個測試項目</div>
+                                <div class="timeline-description">清遠 · 叁</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
@@ -1574,13 +1642,209 @@
                         <!-- 時間軸項目 4 (右側) -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content right">
-                                <div class="timeline-date">2023-09-05</div>
+                                <div class="timeline-date">2023-04-11</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/homepage_gallery4.webp">
-                                        <img src="Main_page_pictures/homepage_gallery4.webp" alt="Testing照片4">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠4.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠4.webp" alt="Testing照片4">
                                     </div>
                                 </div>
-                                <div class="timeline-description">第四個測試項目</div>
+                                <div class="timeline-description">清遠 · 肆</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 5 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-12</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠5.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠5.webp" alt="Testing照片5">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 伍</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 6 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-13</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠6.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠6.webp" alt="Testing照片6">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 陸</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 7 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-14</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠7.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠7.webp" alt="Testing照片7">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 柒</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 8 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-15</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠8.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠8.webp" alt="Testing照片8">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 捌</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 9 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-16</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠9.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠9.webp" alt="Testing照片9">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 玖</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 10 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-17</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠10.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠10.webp" alt="Testing照片10">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 11 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-18</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠11.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠11.webp" alt="Testing照片11">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾壹</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 12 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-19</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠12.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠12.webp" alt="Testing照片12">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾貳</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 13 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-20</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠13.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠13.webp" alt="Testing照片13">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾叁</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 14 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-21</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠14.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠14.webp" alt="Testing照片14">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾肆</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 15 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-22</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠15.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠15.webp" alt="Testing照片15">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾伍</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 16 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-23</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠16.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠16.webp" alt="Testing照片16">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾陸</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 17 (左側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content left">
+                                <div class="timeline-date">2023-04-24</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠17.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠17.webp" alt="Testing照片17">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾柒</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <!-- 時間軸項目 18 (右側) -->
+                        <div class="timeline-item scroll-fade">
+                            <div class="timeline-content right">
+                                <div class="timeline-date">2023-04-25</div>
+                                <div class="timeline-image-wrapper">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠18.webp">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠18.webp" alt="Testing照片18">
+                                    </div>
+                                </div>
+                                <div class="timeline-description">清遠 · 拾捌</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
@@ -2021,30 +2285,42 @@
             const testingGallery = document.getElementById('testing');
             if(!testingGallery) return;
 
-            const timelineImages = testingGallery.querySelectorAll('.timeline-image-wrapper img');
-            if(timelineImages.length === 0) return;
+            const timelineItems = testingGallery.querySelectorAll('.timeline-item');
+            if(timelineItems.length === 0) return;
 
-            // 使用第一張圖片作為初始背景
-            const firstImage = timelineImages[0].src;
-            testingGallery.style.setProperty('--bg-image', `url(${firstImage})`);
-            
-            // 創建 IntersectionObserver 來監聽可見的圖片
+            // 為每個時間軸項目設置背景圖片
+            timelineItems.forEach((item, index) => {
+                const img = item.querySelector('.timeline-image-wrapper img');
+                if(img) {
+                    // 設置背景圖片
+                    item.style.setProperty('--item-bg', `url(${img.src})`);
+                    
+                    // 添加背景樣式
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        #testing .timeline-item:nth-child(${index + 2})::before {
+                            background-image: var(--item-bg);
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            });
+
+            // 創建 IntersectionObserver 來監聽可見的項目
             const bgObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if(entry.isIntersecting && entry.intersectionRatio > 0.3) {
-                        const img = entry.target.querySelector('img');
-                        if(img) {
-                            testingGallery.style.setProperty('--bg-image', `url(${img.src})`);
-                        }
+                    if(entry.isIntersecting && entry.intersectionRatio > 0.2) {
+                        entry.target.classList.add('has-bg');
+                    } else {
+                        entry.target.classList.remove('has-bg');
                     }
                 });
             }, {
-                threshold: 0.3,
-                rootMargin: '-20% 0px -20% 0px'
+                threshold: 0.2,
+                rootMargin: '-10% 0px -10% 0px'
             });
 
             // 監聽所有時間軸項目
-            const timelineItems = testingGallery.querySelectorAll('.timeline-item');
             timelineItems.forEach(item => {
                 bgObserver.observe(item);
             });
@@ -2070,19 +2346,13 @@
                 targetGallery.classList.add('active');
             }
             
-            // 處理 testing 地區的背景漸顯/漸隱
+            // 處理 testing 地區的背景
             const testingGallery = document.getElementById('testing');
             if(regionId === 'testing') {
-                // 漸顯背景
+                // 延遲初始化背景
                 setTimeout(() => {
                     setupTimelineBackground();
-                    testingGallery.classList.add('has-background');
                 }, 100);
-            } else {
-                // 漸隱背景
-                if(testingGallery) {
-                    testingGallery.classList.remove('has-background');
-                }
             }
             
             galleryItems = updateGalleryItems();
@@ -2139,6 +2409,32 @@
             galleryFilterBtn.classList.remove('active');
             galleryFilterDropdown.classList.remove('show');
         });
+
+        // 窗口失去焦點時自動關閉下拉選單
+        window.addEventListener('blur', () => {
+            galleryFilterBtn.classList.remove('active');
+            galleryFilterDropdown.classList.remove('show');
+        });
+
+        // 窗口隱藏時（切換到其他標籤頁或最小化）關閉下拉選單
+        document.addEventListener('visibilitychange', () => {
+            if(document.visibilityState === 'hidden') {
+                galleryFilterBtn.classList.remove('active');
+                galleryFilterDropdown.classList.remove('show');
+            }
+        });
+
+        // 滾動頁面時自動關閉下拉選單
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if(galleryFilterDropdown.classList.contains('show')) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    galleryFilterBtn.classList.remove('active');
+                    galleryFilterDropdown.classList.remove('show');
+                }, 50);
+            }
+        }, { passive: true });
 
         // ========== 回到頂部按鈕 ==========
         const scrollTopBtn = document.getElementById('scrollTopBtn');
@@ -2235,20 +2531,56 @@
             if(index >= 0 && index < musicFiles.length) {
                 currentTrackIndex = index;
                 const track = musicFiles[index];
-                audioCover.src = track.cover;
-                audioTitle.textContent = track.title;
-                audioArtist.textContent = track.artist;
                 
-                const ext = track.src.split('.').pop().toLowerCase();
-                let mimeType = 'audio/mpeg';
-                if(ext === 'flac') mimeType = 'audio/flac';
-                else if(ext === 'wav') mimeType = 'audio/wav';
-                else if(ext === 'ogg') mimeType = 'audio/ogg';
-                else if(ext === 'mp4' || ext === 'm4a') mimeType = 'audio/mp4';
+                // 停止当前播放
+                audioElement.pause();
+                isPlaying = false;
+                audioPlayBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
                 
-                audioElement.querySelector('source').src = track.src;
-                audioElement.querySelector('source').type = mimeType;
-                audioElement.load();
+                // 添加淡出效果
+                audioTitle.classList.add('fade-out');
+                audioArtist.classList.add('fade-out');
+                audioTime.classList.add('fade-out');
+                audioCover.classList.add('fade-out');
+                
+                // 等待淡出完成后更新内容
+                setTimeout(() => {
+                    audioCover.src = track.cover;
+                    audioTitle.textContent = track.title;
+                    audioArtist.textContent = track.artist;
+                    audioTime.textContent = '0:00';
+                    
+                    const ext = track.src.split('.').pop().toLowerCase();
+                    let mimeType = 'audio/mpeg';
+                    if(ext === 'flac') mimeType = 'audio/flac';
+                    else if(ext === 'wav') mimeType = 'audio/wav';
+                    else if(ext === 'ogg') mimeType = 'audio/ogg';
+                    else if(ext === 'mp4' || ext === 'm4a') mimeType = 'audio/mp4';
+                    
+                    audioElement.querySelector('source').src = track.src;
+                    audioElement.querySelector('source').type = mimeType;
+                    audioElement.load();
+                    
+                    // 移除淡出，添加淡入效果
+                    audioTitle.classList.remove('fade-out');
+                    audioArtist.classList.remove('fade-out');
+                    audioTime.classList.remove('fade-out');
+                    audioCover.classList.remove('fade-out');
+                    audioTitle.classList.add('fade-in');
+                    audioArtist.classList.add('fade-in');
+                    audioTime.classList.add('fade-in');
+                    audioCover.classList.add('fade-in');
+                    
+                    // 强制重排后移除fade-in，触发淡入动画
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            audioTitle.classList.remove('fade-in');
+                            audioArtist.classList.remove('fade-in');
+                            audioTime.classList.remove('fade-in');
+                            audioCover.classList.remove('fade-in');
+                        });
+                    });
+                }, 300);
             }
         }
 
@@ -2273,7 +2605,7 @@
 
         audioElement.addEventListener('ended', () => {
             isPlaying = false;
-            audioPlayBtn.textContent = '▶';
+            audioPlayBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
             toggleBtn.classList.add('paused');
             
             if(currentTrackIndex < musicFiles.length - 1) {
@@ -2286,13 +2618,13 @@
 
         audioElement.addEventListener('play', () => {
             isPlaying = true;
-            audioPlayBtn.textContent = '⏸';
+            audioPlayBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm6 0h4V5h-4v14z"/></svg>';
             toggleBtn.classList.remove('paused');
         });
 
         audioElement.addEventListener('pause', () => {
             isPlaying = false;
-            audioPlayBtn.textContent = '▶';
+            audioPlayBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
             toggleBtn.classList.add('paused');
         });
 
@@ -2324,9 +2656,19 @@
             audioVolumeFill.style.width = percent + '%';
             audioVolumeThumb.style.left = percent + '%';
             
-            if(value === 0) audioVolumeIcon.textContent = '🔇';
-            else if(value < 0.5) audioVolumeIcon.textContent = '🔉';
-            else audioVolumeIcon.textContent = '🔊';
+            // 根据音量大小切换 SVG 图标
+            let iconPath;
+            if(value === 0) {
+                // 静音
+                iconPath = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else if(value < 0.5) {
+                // 低音量
+                iconPath = '<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>';
+            } else {
+                // 高音量
+                iconPath = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+            audioVolumeIcon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">' + iconPath + '</svg>';
         }
 
         function setVolume(clientX) {
