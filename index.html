@@ -3503,18 +3503,52 @@
                 isPlaying = false;
                 audioPlayBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
                 
-                // 添加淡出效果
+                // 第一步: 淡出所有元素
                 audioTitle.classList.add('fade-out');
                 audioArtist.classList.add('fade-out');
                 audioTime.classList.add('fade-out');
                 audioCover.classList.add('fade-out');
                 
-                // 等待淡出完成后更新内容
+                // 第二步: 等待淡出完成 (300ms) 后预加载图片
                 setTimeout(() => {
-                    // 先创建一个 Image 对象预加载封面
-                    const tempImg = new Image();
-                    tempImg.onload = () => {
-                        // 图片加载完成后才更新 DOM 和淡入
+                    // 创建 Image 对象在后台加载
+                    const img = new Image();
+                    
+                    // 图片加载成功的处理
+                    img.onload = () => {
+                        // 此时图片已经完全加载到浏览器缓存中
+                        // 1. 更新所有内容 (元素仍然是 fade-out, opacity:0)
+                        audioCover.src = track.cover;
+                        audioTitle.textContent = track.title;
+                        audioArtist.textContent = track.artist;
+                        audioTime.textContent = '0:00';
+                        
+                        // 2. 加载音频
+                        const ext = track.src.split('.').pop().toLowerCase();
+                        let mimeType = 'audio/mpeg';
+                        if(ext === 'flac') mimeType = 'audio/flac';
+                        else if(ext === 'wav') mimeType = 'audio/wav';
+                        else if(ext === 'ogg') mimeType = 'audio/ogg';
+                        else if(ext === 'mp4' || ext === 'm4a') mimeType = 'audio/mp4';
+                        
+                        audioElement.querySelector('source').src = track.src;
+                        audioElement.querySelector('source').type = mimeType;
+                        audioElement.load();
+                        
+                        // 3. 使用 requestAnimationFrame 确保浏览器完成 DOM 更新
+                        requestAnimationFrame(() => {
+                            // 4. 移除 fade-out, 元素开始淡入到 opacity:1
+                            audioTitle.classList.remove('fade-out');
+                            audioArtist.classList.remove('fade-out');
+                            audioTime.classList.remove('fade-out');
+                            audioCover.classList.remove('fade-out');
+                            // 现在 CSS transition 会自动从 opacity:0 动画到 opacity:1
+                        });
+                    };
+                    
+                    // 图片加载失败的处理
+                    img.onerror = () => {
+                        // 直接更新,不做动画
                         audioCover.src = track.cover;
                         audioTitle.textContent = track.title;
                         audioArtist.textContent = track.artist;
@@ -3531,64 +3565,16 @@
                         audioElement.querySelector('source').type = mimeType;
                         audioElement.load();
                         
-                        // 移除淡出，添加淡入效果
-                        audioTitle.classList.remove('fade-out');
-                        audioArtist.classList.remove('fade-out');
-                        audioTime.classList.remove('fade-out');
-                        audioCover.classList.remove('fade-out');
-                        audioTitle.classList.add('fade-in');
-                        audioArtist.classList.add('fade-in');
-                        audioTime.classList.add('fade-in');
-                        audioCover.classList.add('fade-in');
-                        
-                        // 强制重排后移除fade-in，触发淡入动画
                         requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                audioTitle.classList.remove('fade-in');
-                                audioArtist.classList.remove('fade-in');
-                                audioTime.classList.remove('fade-in');
-                                audioCover.classList.remove('fade-in');
-                            });
+                            audioTitle.classList.remove('fade-out');
+                            audioArtist.classList.remove('fade-out');
+                            audioTime.classList.remove('fade-out');
+                            audioCover.classList.remove('fade-out');
                         });
                     };
-                    tempImg.onerror = () => {
-                        // 如果图片加载失败,直接更新
-                        audioCover.src = track.cover;
-                        audioTitle.textContent = track.title;
-                        audioArtist.textContent = track.artist;
-                        audioTime.textContent = '0:00';
-                        
-                        const ext = track.src.split('.').pop().toLowerCase();
-                        let mimeType = 'audio/mpeg';
-                        if(ext === 'flac') mimeType = 'audio/flac';
-                        else if(ext === 'wav') mimeType = 'audio/wav';
-                        else if(ext === 'ogg') mimeType = 'audio/ogg';
-                        else if(ext === 'mp4' || ext === 'm4a') mimeType = 'audio/mp4';
-                        
-                        audioElement.querySelector('source').src = track.src;
-                        audioElement.querySelector('source').type = mimeType;
-                        audioElement.load();
-                        
-                        audioTitle.classList.remove('fade-out');
-                        audioArtist.classList.remove('fade-out');
-                        audioTime.classList.remove('fade-out');
-                        audioCover.classList.remove('fade-out');
-                        audioTitle.classList.add('fade-in');
-                        audioArtist.classList.add('fade-in');
-                        audioTime.classList.add('fade-in');
-                        audioCover.classList.add('fade-in');
-                        
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                audioTitle.classList.remove('fade-in');
-                                audioArtist.classList.remove('fade-in');
-                                audioTime.classList.remove('fade-in');
-                                audioCover.classList.remove('fade-in');
-                            });
-                        });
-                    };
+                    
                     // 开始加载图片
-                    tempImg.src = track.cover;
+                    img.src = track.cover;
                 }, 300);
             }
         }
