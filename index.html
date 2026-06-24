@@ -2851,6 +2851,11 @@
                 window.scrollTo(0,0);
                 document.documentElement.scrollTop = 0;
             });
+            
+            // 页面加载完成后,预加载第一首歌的相邻歌曲
+            setTimeout(() => {
+                preloadAdjacentTracks();
+            }, 1000);
         });
 
         // 頁面從緩存恢復時確保滾動到頂部
@@ -3491,6 +3496,26 @@
             },
         ];
         let currentTrackIndex = 0;
+        
+        // 预加载相邻歌曲的音频和图片
+        function preloadAdjacentTracks() {
+            const prevIndex = (currentTrackIndex - 1 + musicFiles.length) % musicFiles.length;
+            const nextIndex = (currentTrackIndex + 1) % musicFiles.length;
+            
+            // 预加载上一首和下一首的音频
+            [prevIndex, nextIndex].forEach(index => {
+                const track = musicFiles[index];
+                
+                // 预加载音频 (创建一个隐藏的 audio 元素)
+                const audio = new Audio();
+                audio.preload = 'auto';
+                audio.src = track.src;
+                
+                // 预加载封面图片
+                const img = new Image();
+                img.src = track.cover;
+            });
+        }
 
         // 載入指定索引的音樂
         function loadTrack(index) {
@@ -3543,6 +3568,9 @@
                             audioTime.classList.remove('fade-out');
                             audioCover.classList.remove('fade-out');
                             // 现在 CSS transition 会自动从 opacity:0 动画到 opacity:1
+                            
+                            // 5. 预加载相邻歌曲
+                            preloadAdjacentTracks();
                         });
                     };
                     
@@ -3570,6 +3598,9 @@
                             audioArtist.classList.remove('fade-out');
                             audioTime.classList.remove('fade-out');
                             audioCover.classList.remove('fade-out');
+                            
+                            // 图片加载失败也要预加载相邻歌曲
+                            preloadAdjacentTracks();
                         });
                     };
                     
