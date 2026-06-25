@@ -530,7 +530,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.4) 5%, rgba(255,255,255,0.4) 95%, transparent 100%);
             transform: translateX(-50%);
             z-index: 1;
             pointer-events: none;
@@ -1007,6 +1007,11 @@
             pointer-events: none;
             object-fit: contain;
             margin: 0 auto;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        .lightbox-img.fade-out {
+            opacity: 0;
         }
 
         .lightbox-special-info {
@@ -1046,6 +1051,80 @@
             white-space: nowrap;
             text-shadow: 0 2px 8px rgba(0,0,0,0.6);
             margin-top: 0;
+        }
+
+        /* ========== Lightbox 導航按鈕（桌面端 Liquid Glass 風格） ========== */
+        .lightbox-nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            z-index: 10000;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            backdrop-filter: blur(22px) saturate(140%);
+            -webkit-backdrop-filter: blur(22px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+            user-select: none;
+            pointer-events: none;
+        }
+        .lightbox-nav-btn.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .lightbox-nav-btn:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+            border-color: rgba(255,255,255,0.35);
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.25), 0 14px 40px rgba(0,0,0,0.6);
+        }
+        .lightbox-nav-btn:active {
+            transform: translateY(-50%) scale(0.92);
+            transition: transform 0.15s ease;
+        }
+        .lightbox-nav-btn.prev { left: 24px; }
+        .lightbox-nav-btn.next { right: 24px; }
+
+        /* ========== 手機端：圖片計數器（Liquid Glass 藥丸） ========== */
+        .lightbox-counter {
+            position: fixed;
+            top: calc(16px + env(safe-area-inset-top, 0px));
+            left: calc(16px + env(safe-area-inset-left, 0px));
+            z-index: 10001;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 7px 16px;
+            color: #fff;
+            font-family: "LXGW WenKai TC", serif;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            pointer-events: none;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.14), 0 6px 24px rgba(0,0,0,0.4);
+            white-space: nowrap;
+            display: none;
+        }
+        .lightbox-counter.show {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* ========== 響應式設計 - 手機端 ========== */
@@ -1101,8 +1180,12 @@
             .timeline-dot { left: 30px; }
             .timeline-content { width: 100%; padding-left: 60px !important; padding-right: 0 !important; text-align: left !important; }
             .timeline-content.left, .timeline-content.right { margin-left: 0; margin-right: 0; }
+            /* 手機端隱藏 Lightbox 導航按鈕（改用滑動切換） */
+            .lightbox-nav-btn { display: none !important; }
+            /* 手機端啟用計數器 */
+            .lightbox-counter { display: block; }
         }
-        /* 桌面端隱藏lightbox關閉按鈕（改為點擊背景關閉） */
+        /* 桌面端 — 顯示 Lightbox 導航按鈕，隱藏關閉按鈕 */
         @media (min-width: 769px) {
             .lightbox-close-btn { display: none !important; }
         }
@@ -1156,6 +1239,9 @@
 
     <!-- 圖片Lightbox -->
     <div class="image-lightbox" id="lightbox">
+        <!-- 手機端：圖片計數器（Liquid Glass 藥丸） -->
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+
         <div class="lightbox-inner">
             <div class="lightbox-wrap" id="lightboxWrap">
                 <img class="lightbox-img" id="lightboxImg" src="" alt="大圖檢視" style="display:none;">
@@ -1169,6 +1255,10 @@
 
     <!-- Lightbox關閉按鈕（手機端顯示） -->
     <button class="lightbox-close-btn" id="lightboxCloseBtn">✕</button>
+
+    <!-- Lightbox 導航按鈕（桌面端 Liquid Glass，左右切換同一天內的照片） -->
+    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn">◀</button>
+    <button class="lightbox-nav-btn next" id="lightboxNextBtn">▶</button>
 
     <!-- 自定義音頻播放器 -->
     <div class="custom-audio-player hidden" id="customAudioPlayer">
@@ -2321,237 +2411,35 @@
                 <div class="region-gallery" id="tokyo">
                     <div class="timeline-container">
                         <div class="timeline-line"></div>
-                        
+
+                        <!-- Day 1（左側） -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-10</div>
+                                <div class="timeline-date">Day 1</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠1.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠1.webp" alt="東京照片1">
+                                    <div class="gallery-item"
+                                         data-img="Main_page_pictures/Full gallery/東京/Day1/1.webp"
+                                         data-images='["Main_page_pictures/Full gallery/東京/Day1/1.webp","Main_page_pictures/Full gallery/東京/Day1/2.webp","Main_page_pictures/Full gallery/東京/Day1/3.webp","Main_page_pictures/Full gallery/東京/Day1/4.webp"]'>
+                                        <img src="Main_page_pictures/Full gallery/東京/Day1/1.webp" alt="東京 Day1">
                                     </div>
                                 </div>
-                                <div class="timeline-description">東京 · 壹</div>
+                                <div class="timeline-description">東京 · Day 1 · 新宿-歌舞伎町</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
 
+                        <!-- Day 2（右側） -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-11</div>
+                                <div class="timeline-date">Day 2</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠2.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠2.webp" alt="東京照片2">
+                                    <div class="gallery-item"
+                                         data-img="Main_page_pictures/Full gallery/東京/Day2/1.webp"
+                                         data-images='["Main_page_pictures/Full gallery/東京/Day2/1.webp","Main_page_pictures/Full gallery/東京/Day2/2.webp","Main_page_pictures/Full gallery/東京/Day2/3.webp","Main_page_pictures/Full gallery/東京/Day2/4.webp","Main_page_pictures/Full gallery/東京/Day2/5.webp","Main_page_pictures/Full gallery/東京/Day2/6.webp","Main_page_pictures/Full gallery/東京/Day2/7.webp","Main_page_pictures/Full gallery/東京/Day2/8.webp","Main_page_pictures/Full gallery/東京/Day2/9.webp","Main_page_pictures/Full gallery/東京/Day2/10.webp"]'>
+                                        <img src="Main_page_pictures/Full gallery/東京/Day2/1.webp" alt="東京 Day2">
                                     </div>
                                 </div>
-                                <div class="timeline-description">東京 · 貳</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-12</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠3.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠3.webp" alt="東京照片3">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 叁</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-13</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠4.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠4.webp" alt="東京照片4">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 肆</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-14</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠5.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠5.webp" alt="東京照片5" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 伍</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-15</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠6.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠6.webp" alt="東京照片6" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 陸</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-16</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠7.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠7.webp" alt="東京照片7" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 柒</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-17</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠8.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠8.webp" alt="東京照片8" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 捌</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-18</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠9.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠9.webp" alt="東京照片9" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 玖</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-19</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠10.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠10.webp" alt="東京照片10" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-20</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠11.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠11.webp" alt="東京照片11" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾壹</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-21</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠12.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠12.webp" alt="東京照片12" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾貳</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-22</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠13.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠13.webp" alt="東京照片13" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾叁</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-23</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠14.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠14.webp" alt="東京照片14" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾肆</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-24</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠15.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠15.webp" alt="東京照片15" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾伍</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-25</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠16.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠16.webp" alt="東京照片16" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾陸</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content left">
-                                <div class="timeline-date">2025-04-26</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠17.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠17.webp" alt="東京照片17" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾柒</div>
-                            </div>
-                            <div class="timeline-dot"></div>
-                        </div>
-
-                        <div class="timeline-item scroll-fade">
-                            <div class="timeline-content right">
-                                <div class="timeline-date">2025-04-27</div>
-                                <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠18.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠18.webp" alt="東京照片18" loading="lazy">
-                                    </div>
-                                </div>
-                                <div class="timeline-description">東京 · 拾捌</div>
+                                <div class="timeline-description">東京 · Day 2 · 鐮倉-江之島、七里濱</div>
                             </div>
                             <div class="timeline-dot"></div>
                         </div>
@@ -2931,7 +2819,7 @@
         const cursor = document.querySelector('.custom-cursor');
         let mouseX=0, mouseY=0, cursorX=0, cursorY=0, hoverTimer=null;
         // 定義需要鼠標懸停效果的元素列表
-        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .audio-progress-container, .audio-volume-track, .filter-select, .gallery-filter-btn, .gallery-filter-option');
+        const hoverElements = document.querySelectorAll('a, button, .gallery-item, .btnCn, .btnEn, .logo-wrap, .music-toggle-btn, .scroll-top-btn, .lightbox-wrap, .glass-btn, .custom-audio-player, .lightbox-close-btn, .lightbox-nav-btn, .audio-progress-container, .audio-volume-track, .filter-select, .gallery-filter-btn, .gallery-filter-option');
         const hoverList = Array.from(hoverElements);
 
         document.addEventListener('mousemove', (e) => { mouseX=e.clientX; mouseY=e.clientY; });
@@ -3126,7 +3014,14 @@
         const lightboxWrap = document.getElementById('lightboxWrap');
         const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
         const lightboxSpecialInfo = document.getElementById('lightboxSpecialInfo');
-        
+        const lightboxPrevBtn = document.getElementById('lightboxPrevBtn');
+        const lightboxNextBtn = document.getElementById('lightboxNextBtn');
+        const lightboxCounter = document.getElementById('lightboxCounter');
+
+        // 多圖片導航狀態（同一 Day 內切換）
+        let currentImageSet = [];
+        let currentImageIndex = 0;
+
         // 更新畫廊項目列表
         function updateGalleryItems() {
             return document.querySelectorAll('.gallery-item[data-img]');
@@ -3156,29 +3051,68 @@
             window.scrollTo({top:_scrollY,left:0,behavior:'instant'});
         }
 
+        // 更新導航按鈕顯示狀態
+        function updateNavButtons() {
+            const hasMultiple = currentImageSet.length > 1;
+            const isDesktop = window.innerWidth > 768;
+            if (isDesktop && hasMultiple && lightbox.classList.contains('active')) {
+                lightboxPrevBtn.classList.add('show');
+                lightboxNextBtn.classList.add('show');
+            } else {
+                lightboxPrevBtn.classList.remove('show');
+                lightboxNextBtn.classList.remove('show');
+            }
+        }
+
+        // 手機端：更新計數器
+        function updateMobilePeek() {
+            const hasMultiple = currentImageSet.length > 1;
+            const isMobile = window.innerWidth <= 768;
+            const shouldShow = hasMultiple && isMobile && lightbox.classList.contains('active');
+
+            if (shouldShow) {
+                lightboxCounter.textContent = (currentImageIndex + 1) + ' / ' + currentImageSet.length;
+                lightboxCounter.classList.add('show');
+            } else {
+                lightboxCounter.classList.remove('show');
+            }
+        }
+
+        // Lightbox 內切換上一張／下一張
+        function navigateLightbox(direction) {
+            if (currentImageSet.length <= 1) return;
+            currentImageIndex = (currentImageIndex + direction + currentImageSet.length) % currentImageSet.length;
+            showImageInLightbox(currentImageSet[currentImageIndex]);
+            updateMobilePeek();
+        }
+
         // 關閉Lightbox
         function closeLightbox() {
             lightbox.classList.remove('active');
             lightboxCloseBtn.classList.remove('show');
+            lightboxPrevBtn.classList.remove('show');
+            lightboxNextBtn.classList.remove('show');
+            lightboxCounter.classList.remove('show');
+            lightboxImg.classList.remove('fade-out');
             lightboxImg.src = '';
             lightboxImg.style.display = 'none';
             currentLightboxSrc = '';
+            currentImageSet = [];
+            currentImageIndex = 0;
             lightboxSpecialInfo.classList.remove('show');
             unlockScrollLB();
         }
 
         // 在Lightbox中顯示圖片
         function showImageInLightbox(src) {
-            if(currentLightboxSrc === src && lightboxImg.style.display !== 'none') {
+            // 同一張圖片且正在顯示中（非淡出狀態），跳過
+            if(currentLightboxSrc === src && lightboxImg.style.display !== 'none' && !lightboxImg.classList.contains('fade-out')) {
                 lightbox.classList.add('active');
                 if(window.innerWidth <= 768) lightboxCloseBtn.classList.add('show');
                 return;
             }
-            currentLightboxSrc = src;
-            lightboxImg.style.display = 'none';
-            lightboxImg.src = '';
-            lightbox.classList.add('active');
-            if(window.innerWidth <= 768) lightboxCloseBtn.classList.add('show');
+
+            const isNavigating = lightbox.classList.contains('active');
 
             if(lightboxWrap.dataset.showInfo === 'true') {
                 lightboxSpecialInfo.classList.add('show');
@@ -3186,25 +3120,57 @@
                 lightboxSpecialInfo.classList.remove('show');
             }
 
-            if(preloadCache.has(src) && preloadCache.get(src)) {
-                lightboxImg.src = src;
-                lightboxImg.style.display = 'block';
+            if(window.innerWidth <= 768) lightboxCloseBtn.classList.add('show');
+
+            // 實際載入並顯示圖片的內部函數
+            function loadAndShow() {
+                currentLightboxSrc = src;
+                lightbox.classList.add('active');
+
+                if(preloadCache.has(src) && preloadCache.get(src)) {
+                    lightboxImg.src = src;
+                    lightboxImg.style.display = 'block';
+                    // 使用 RAF 確保瀏覽器先渲染新圖片，再移除淡出觸發淡入
+                    requestAnimationFrame(() => {
+                        lightboxImg.classList.remove('fade-out');
+                    });
+                } else {
+                    const tempImg = new Image();
+                    tempImg.onload = function() {
+                        if(currentLightboxSrc === src) {
+                            preloadCache.set(src, tempImg);
+                            lightboxImg.src = src;
+                            lightboxImg.style.display = 'block';
+                            requestAnimationFrame(() => {
+                                lightboxImg.classList.remove('fade-out');
+                            });
+                        }
+                    };
+                    tempImg.onerror = function() {
+                        if(currentLightboxSrc === src) {
+                            preloadCache.set(src, null);
+                            lightboxImg.style.display = 'block';
+                            requestAnimationFrame(() => {
+                                lightboxImg.classList.remove('fade-out');
+                            });
+                        }
+                    };
+                    tempImg.src = src;
+                }
+                updateNavButtons();
+            }
+
+            if (isNavigating) {
+                // 在同一天內切換圖片：先淡出當前圖片，再載入新圖片淡入
+                lightboxImg.classList.add('fade-out');
+                setTimeout(() => {
+                    loadAndShow();
+                }, 400); // 與 CSS transition 的 0.4s 匹配
             } else {
-                const tempImg = new Image();
-                tempImg.onload = function() {
-                    if(currentLightboxSrc === src) {
-                        preloadCache.set(src, tempImg);
-                        lightboxImg.src = src;
-                        lightboxImg.style.display = 'block';
-                    }
-                };
-                tempImg.onerror = function() {
-                    if(currentLightboxSrc === src) {
-                        preloadCache.set(src, null);
-                        lightboxImg.style.display = 'block';
-                    }
-                };
-                tempImg.src = src;
+                // 首次打開 Lightbox：直接載入，不需淡出
+                lightboxImg.style.display = 'none';
+                lightboxImg.src = '';
+                loadAndShow();
             }
         }
 
@@ -3222,8 +3188,26 @@
             const src = item.dataset.img;
             const isSpecial = item.classList.contains('is-special');
             lightboxWrap.dataset.showInfo = isSpecial ? 'true' : 'false';
+
+            // 解析多圖片資料（同一天內的多張圖片）
+            if (item.dataset.images) {
+                try {
+                    currentImageSet = JSON.parse(item.dataset.images);
+                    currentImageIndex = currentImageSet.indexOf(src);
+                    if (currentImageIndex === -1) currentImageIndex = 0;
+                } catch(err) {
+                    currentImageSet = [src];
+                    currentImageIndex = 0;
+                }
+            } else {
+                currentImageSet = [src];
+                currentImageIndex = 0;
+            }
+
             lockScrollLB();
             showImageInLightbox(src);
+            updateNavButtons();
+            updateMobilePeek();
         }
 
         bindGalleryEvents();
@@ -3242,6 +3226,55 @@
             e.stopPropagation();
             lightboxWrap.classList.add('press');
             setTimeout(() => lightboxWrap.classList.remove('press'), 150);
+        });
+
+        // Lightbox 導航按鈕（桌面端 — 上一張／下一張）
+        lightboxPrevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navigateLightbox(-1);
+        });
+        lightboxNextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navigateLightbox(1);
+        });
+
+        // 手機端滑動切換圖片（Lightbox 內）
+        let touchStartX = 0;
+        let touchStartY = 0;
+        lightbox.addEventListener('touchstart', (e) => {
+            if (e.target === lightbox || e.target === lightboxWrap || lightboxWrap.contains(e.target)) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, {passive: true});
+        lightbox.addEventListener('touchend', (e) => {
+            if (currentImageSet.length <= 1) return;
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            const dy = e.changedTouches[0].clientY - touchStartY;
+            // 水平滑動為主且距離足夠才觸發切換
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                e.preventDefault();
+                if (dx > 0) {
+                    navigateLightbox(-1); // 向右滑 → 上一張
+                } else {
+                    navigateLightbox(1);  // 向左滑 → 下一張
+                }
+            }
+        });
+
+        // 桌面端鍵盤左右方向鍵切換圖片
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (currentImageSet.length <= 1) return;
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigateLightbox(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigateLightbox(1);
+            } else if (e.key === 'Escape') {
+                closeLightbox();
+            }
         });
 
         // ========== 地區篩選功能（Liquid Glass 按鈕式下拉選單） ==========
@@ -3410,6 +3443,8 @@
         // ========== 回到頂部按鈕 ==========
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('show', window.scrollY > 300); });
+        // 視窗大小變更時更新 Lightbox 導航按鈕顯示狀態
+        window.addEventListener('resize', () => { updateNavButtons(); updateMobilePeek(); });
         scrollTopBtn.addEventListener('click', () => {
             scrollTopBtn.classList.add('click-bounce');
             setTimeout(() => scrollTopBtn.classList.remove('click-bounce'), 300);
