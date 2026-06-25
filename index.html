@@ -320,12 +320,16 @@
             -webkit-backdrop-filter: blur(20px) saturate(140%);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 18px;
-            padding: 6px 16px;
+            padding: 8px 18px; /* 修改：上下padding從6px增加到8px，左右從16px增加到18px */
             color: #fff;
             font-family: "LXGW WenKai TC", serif;
             font-size: 13px;
             font-weight: 300;
             letter-spacing: 1px;
+            line-height: 1; /* 新增：設定行高為1，讓文字垂直居中 */
+            display: flex; /* 新增：使用flex讓文字更容易居中 */
+            align-items: center; /* 新增：垂直居中文字 */
+            justify-content: center; /* 新增：水平居中文字 */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
