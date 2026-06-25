@@ -187,7 +187,8 @@
             0% { box-shadow: 0 0 0 0px rgba(255,255,255,0.6); }
             100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
         }
-        .music-toggle-btn.hint-ring {
+        .music-toggle-btn.hint-ring,
+        .avatar-link.hint-ring {
             animation: pulseHintRing 2.2s infinite ease-out;
         }
 
@@ -292,8 +293,67 @@
             height: 160px;
             border-radius: 50%;
             object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: block; /* 確保圖片是區塊元素，消除底部空隙 */
+        }
+        .about-header a {
+            position: relative;
+            display: flex; /* 改為 flex 佈局 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            text-decoration: none;
+            border-radius: 50%;
+            line-height: 0; /* 消除行高造成的偏移 */
+            flex-shrink: 0; /* 防止被壓縮 */
+        }
+        /* 頭像 hover 對話框 */
+        .about-header a::after {
+            content: '查看 Instagram 主頁';
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 18px;
+            padding: 6px 16px;
+            color: #fff;
+            font-family: "LXGW WenKai TC", serif;
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            pointer-events: none;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 24px rgba(0,0,0,0.4);
+        }
+        .about-header a:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        a:has(.avatar-circle):hover .avatar-circle {
+            transform: scale(1.06);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.2), 0 8px 32px rgba(255,255,255,0.15);
         }
         .about-username { font-size: 48px; font-weight: bold; color: #fff; }
+
+        /* ========== About me QR Code ========== */
+        .about-qrcode {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .about-qrcode img {
+            width: 300px;
+            height: 300px;
+            border-radius: 12px;
+            object-fit: contain;
+        }
 
         /* ========== 首頁橫幅 ========== */
         .banner {
@@ -1196,7 +1256,8 @@
             #preloaderMask { transition: none !important; }
             .custom-cursor { transition: none !important; }
             .scroll-fade { transition: none !important; opacity: 1 !important; transform: none !important; }
-            .music-toggle-btn.hint-ring { animation: none !important; }
+            .music-toggle-btn.hint-ring,
+            .avatar-link.hint-ring { animation: none !important; }
             .banner-3d-item { transition: none !important; transform: none !important; text-shadow: 0px 2px 12px rgba(0,0,0,0.8) !important; }
             .banner { perspective: none; }
         }
@@ -1391,10 +1452,15 @@
         <div class="page" id="aboutme">
             <div class="container">
                 <div class="about-header scroll-fade">
-                    <img class="avatar-circle" src="Main_page_pictures/Logo_1.webp" alt="個人頭像">
+                    <a href="https://www.instagram.com/charliewong_gallery/" target="_blank" rel="noopener noreferrer" class="avatar-link hint-ring" id="avatarLink">
+                        <img class="avatar-circle" src="Main_page_pictures/Logo_1.webp" alt="個人頭像">
+                    </a>
                     <h1 class="about-username">@charliewong_gallery</h1>
                 </div>
                 <h2 class="section-title scroll-fade">About me</h2>
+                <div class="about-qrcode scroll-fade">
+                    <img src="Main_page_pictures/About me/qrcode.png" alt="Instagram QR Code">
+                </div>
             </div>
             <footer class="scroll-fade">
                 <p>© 2026 @charliewong_gallery | 所有版權保留</p>
@@ -3803,6 +3869,14 @@
                 if(isPlaying) audioElement.play().catch(()=>{});
             }
         });
+
+        // About me 頭像點擊後移除提示光圈
+        const avatarLink = document.getElementById('avatarLink');
+        if (avatarLink) {
+            avatarLink.addEventListener('click', () => {
+                avatarLink.classList.remove('hint-ring');
+            });
+        }
 
         // 音樂切換按鈕
         toggleBtn.addEventListener('click', () => {
