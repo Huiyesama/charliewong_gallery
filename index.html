@@ -1097,7 +1097,7 @@
         .lightbox-nav-btn.prev { left: 24px; }
         .lightbox-nav-btn.next { right: 24px; }
 
-        /* ========== 手機端：圖片計數器（Liquid Glass 藥丸） ========== */
+        /* ========== 圖片計數器（Liquid Glass 藥丸，桌面＋手機通用） ========== */
         .lightbox-counter {
             position: fixed;
             top: calc(16px + env(safe-area-inset-top, 0px));
@@ -1120,7 +1120,6 @@
             pointer-events: none;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.14), 0 6px 24px rgba(0,0,0,0.4);
             white-space: nowrap;
-            display: none;
         }
         .lightbox-counter.show {
             opacity: 1;
@@ -1182,8 +1181,6 @@
             .timeline-content.left, .timeline-content.right { margin-left: 0; margin-right: 0; }
             /* 手機端隱藏 Lightbox 導航按鈕（改用滑動切換） */
             .lightbox-nav-btn { display: none !important; }
-            /* 手機端啟用計數器 */
-            .lightbox-counter { display: block; }
         }
         /* 桌面端 — 顯示 Lightbox 導航按鈕，隱藏關閉按鈕 */
         @media (min-width: 769px) {
@@ -3064,11 +3061,10 @@
             }
         }
 
-        // 手機端：更新計數器
-        function updateMobilePeek() {
+        // 更新圖片計數器（桌面＋手機通用，所有 full gallery 圖片）
+        function updateLightboxCounter() {
             const hasMultiple = currentImageSet.length > 1;
-            const isMobile = window.innerWidth <= 768;
-            const shouldShow = hasMultiple && isMobile && lightbox.classList.contains('active');
+            const shouldShow = hasMultiple && lightbox.classList.contains('active');
 
             if (shouldShow) {
                 lightboxCounter.textContent = (currentImageIndex + 1) + ' / ' + currentImageSet.length;
@@ -3083,7 +3079,7 @@
             if (currentImageSet.length <= 1) return;
             currentImageIndex = (currentImageIndex + direction + currentImageSet.length) % currentImageSet.length;
             showImageInLightbox(currentImageSet[currentImageIndex]);
-            updateMobilePeek();
+            updateLightboxCounter();
         }
 
         // 關閉Lightbox
@@ -3207,7 +3203,7 @@
             lockScrollLB();
             showImageInLightbox(src);
             updateNavButtons();
-            updateMobilePeek();
+            updateLightboxCounter();
         }
 
         bindGalleryEvents();
@@ -3444,7 +3440,7 @@
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('show', window.scrollY > 300); });
         // 視窗大小變更時更新 Lightbox 導航按鈕顯示狀態
-        window.addEventListener('resize', () => { updateNavButtons(); updateMobilePeek(); });
+        window.addEventListener('resize', () => { updateNavButtons(); updateLightboxCounter(); });
         scrollTopBtn.addEventListener('click', () => {
             scrollTopBtn.classList.add('click-bounce');
             setTimeout(() => scrollTopBtn.classList.remove('click-bounce'), 300);
