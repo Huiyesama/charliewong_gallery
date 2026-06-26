@@ -1044,12 +1044,19 @@
             padding: 16px;
             border-radius: 20px;
             background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-            backdrop-filter: blur(22px) saturate(140%);
-            -webkit-backdrop-filter: blur(22px) saturate(140%);
-            border: 1px solid rgba(255,255,255,0.22);
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
+            /* 初始狀態：液態玻璃邊框效果設為「關閉」，之後透過過渡動畫慢慢浮現 */
+            backdrop-filter: blur(0px) saturate(100%);
+            -webkit-backdrop-filter: blur(0px) saturate(100%);
+            border: 1px solid rgba(255,255,255,0.0);
+            box-shadow: 0 0 0 0px rgba(255,255,255,0), inset 0 0px 0 rgba(255,255,255,0), inset 0 0px 0 rgba(0,0,0,0), 0 0px 0px rgba(0,0,0,0);
             cursor: pointer;
-            transition: transform 0.45s cubic-bezier(0.2,0,0.2,1), opacity 0.45s ease;
+            /* 玻璃邊框屬性也加上過渡動畫，讓邊框慢慢顯示和慢慢消失 */
+            transition: transform 0.5s cubic-bezier(0.2,0,0.2,1),
+                        opacity 0.7s ease,
+                        border-color 0.7s ease,
+                        box-shadow 0.7s ease,
+                        backdrop-filter 0.7s ease,
+                        -webkit-backdrop-filter 0.7s ease;
             transform: scale(0.92);
             opacity: 0;
             max-width: 90vw;
@@ -1060,8 +1067,17 @@
         .image-lightbox.active .lightbox-wrap {
             transform: scale(1);
             opacity: 1;
+            /* 完整液態玻璃邊框效果 — 透過過渡動畫慢慢浮現 */
+            backdrop-filter: blur(22px) saturate(140%);
+            -webkit-backdrop-filter: blur(22px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.45);
         }
         .lightbox-wrap.press { transform: scale(0.96); }
+        /* 切換圖片時液態玻璃邊框的淡出效果 */
+        .lightbox-wrap.fade-out {
+            opacity: 0 !important;
+        }
 
         .lightbox-img {
             display: block;
@@ -1160,6 +1176,32 @@
         }
         .lightbox-nav-btn.prev { left: 24px; }
         .lightbox-nav-btn.next { right: 24px; }
+
+        /* Liquid Glass 鏤空箭頭三角形 */
+        .lightbox-nav-btn::before {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-left: 2px solid rgba(255,255,255,0.7);
+            border-bottom: 2px solid rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+        }
+        /* 左箭頭（向左旋轉45度） */
+        .lightbox-nav-btn.prev::before {
+            transform: rotate(45deg);
+            margin-left: 4px; /* 視覺居中微調 */
+        }
+        /* 右箭頭（向右旋轉45度 = 旋轉225度） */
+        .lightbox-nav-btn.next::before {
+            transform: rotate(-135deg); /* 等同於 rotate(225deg) */
+            margin-right: 4px; /* 視覺居中微調 */
+        }
+        /* hover 時箭頭更亮 */
+        .lightbox-nav-btn:hover::before {
+            border-left-color: rgba(255,255,255,0.95);
+            border-bottom-color: rgba(255,255,255,0.95);
+        }
 
         /* ========== 圖片計數器（Liquid Glass 藥丸，桌面＋手機通用） ========== */
         .lightbox-counter {
@@ -1319,8 +1361,8 @@
     <button class="lightbox-close-btn" id="lightboxCloseBtn">✕</button>
 
     <!-- Lightbox 導航按鈕（桌面端 Liquid Glass，左右切換同一天內的照片） -->
-    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn">◀</button>
-    <button class="lightbox-nav-btn next" id="lightboxNextBtn">▶</button>
+    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn"></button>
+    <button class="lightbox-nav-btn next" id="lightboxNextBtn"></button>
 
     <!-- 自定義音頻播放器 -->
     <div class="custom-audio-player hidden" id="customAudioPlayer">
@@ -2240,10 +2282,10 @@
                         
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">2025-03-15</div>
+                                <div class="timeline-date">2023-04-01</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠1.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠1.webp" alt="深圳照片1">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/深圳/1.webp">
+                                        <img src="Main_page_pictures/Full gallery/深圳/1.webp" alt="2023-4-01">
                                     </div>
                                 </div>
                                 <div class="timeline-description">深圳 · 壹</div>
@@ -2253,10 +2295,10 @@
 
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content right">
-                                <div class="timeline-date">2025-03-16</div>
+                                <div class="timeline-date">2023-11-20</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠2.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠2.webp" alt="深圳照片2">
+                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/深圳/2.webp">
+                                        <img src="Main_page_pictures/Full gallery/深圳/2.webp" alt="2023-11-20">
                                     </div>
                                 </div>
                                 <div class="timeline-description">深圳 · 貳</div>
@@ -2266,10 +2308,12 @@
 
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">2025-03-17</div>
+                                <div class="timeline-date">2024-1-18</div>
                                 <div class="timeline-image-wrapper">
-                                    <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠3.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠3.webp" alt="深圳照片3">
+                                    <div class="gallery-item"
+                                         data-img="Main_page_pictures/Full gallery/深圳/3.webp"
+                                         data-images='["Main_page_pictures/Full gallery/深圳/3.webp","Main_page_pictures/Full gallery/深圳/4.webp"]'>
+                                        <img src="Main_page_pictures/Full gallery/深圳/3.webp" alt="2024-1-18">
                                     </div>
                                 </div>
                                 <div class="timeline-description">深圳 · 叁</div>
@@ -2282,7 +2326,7 @@
                                 <div class="timeline-date">2025-03-18</div>
                                 <div class="timeline-image-wrapper">
                                     <div class="gallery-item" data-img="Main_page_pictures/Full gallery/清遠/清遠4.webp">
-                                        <img src="Main_page_pictures/Full gallery/清遠/清遠4.webp" alt="深圳照片4">
+                                        <img src="Main_page_pictures/Full gallery/清遠/清遠4.webp" alt="深圳照片4" loading="lazy">
                                     </div>
                                 </div>
                                 <div class="timeline-description">深圳 · 肆</div>
@@ -2482,7 +2526,7 @@
                         <!-- Day 1（左側） -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content left">
-                                <div class="timeline-date">Day 1</div>
+                                <div class="timeline-date">2026-6-01</div>
                                 <div class="timeline-image-wrapper">
                                     <div class="gallery-item"
                                          data-img="Main_page_pictures/Full gallery/東京/Day1/1.webp"
@@ -2498,7 +2542,7 @@
                         <!-- Day 2（右側） -->
                         <div class="timeline-item scroll-fade">
                             <div class="timeline-content right">
-                                <div class="timeline-date">Day 2</div>
+                                <div class="timeline-date">2026-6-02</div>
                                 <div class="timeline-image-wrapper">
                                     <div class="gallery-item"
                                          data-img="Main_page_pictures/Full gallery/東京/Day2/1.webp"
@@ -3160,6 +3204,7 @@
             lightboxNextBtn.classList.remove('show');
             lightboxCounter.classList.remove('show');
             lightboxImg.classList.remove('fade-out');
+            lightboxWrap.classList.remove('fade-out');
             lightboxImg.src = '';
             lightboxImg.style.display = 'none';
             currentLightboxSrc = '';
@@ -3199,6 +3244,7 @@
                     // 使用 RAF 確保瀏覽器先渲染新圖片，再移除淡出觸發淡入
                     requestAnimationFrame(() => {
                         lightboxImg.classList.remove('fade-out');
+                        lightboxWrap.classList.remove('fade-out');
                     });
                 } else {
                     const tempImg = new Image();
@@ -3209,6 +3255,7 @@
                             lightboxImg.style.display = 'block';
                             requestAnimationFrame(() => {
                                 lightboxImg.classList.remove('fade-out');
+                                lightboxWrap.classList.remove('fade-out');
                             });
                         }
                     };
@@ -3218,6 +3265,7 @@
                             lightboxImg.style.display = 'block';
                             requestAnimationFrame(() => {
                                 lightboxImg.classList.remove('fade-out');
+                                lightboxWrap.classList.remove('fade-out');
                             });
                         }
                     };
@@ -3227,11 +3275,12 @@
             }
 
             if (isNavigating) {
-                // 在同一天內切換圖片：先淡出當前圖片，再載入新圖片淡入
+                // 在同一天內切換圖片：先淡出當前圖片和液態玻璃邊框，再載入新圖片淡入
                 lightboxImg.classList.add('fade-out');
+                lightboxWrap.classList.add('fade-out');
                 setTimeout(() => {
                     loadAndShow();
-                }, 400); // 與 CSS transition 的 0.4s 匹配
+                }, 500); // 與 CSS transition 的 0.5s~0.7s 匹配，讓玻璃邊框有足夠時間淡出
             } else {
                 // 首次打開 Lightbox：直接載入，不需淡出
                 lightboxImg.style.display = 'none';
